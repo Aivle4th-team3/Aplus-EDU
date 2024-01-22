@@ -1,12 +1,11 @@
 {% extends "../home/layout.html" %}
 {% load static %}
 {% block contents %}
-<link rel="stylesheet" href="{% static '/vendor/libs/flatpickr/flatpickr.css' %}" />
-<link rel="stylesheet" href="{% static '/vendor/libs/fullcalendar/fullcalendar.css' %}" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 <link rel="stylesheet" href="{% static '/vendor/sneat-bootstrap/app-calendar.css' %}" />
 
-<script src="{% static '/vendor/libs/flatpickr/flatpickr.js' %}"></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
 
 <script src="{% static '/vendor/sneat-bootstrap/app-calendar.js' %}"></script>
 <script src="{% static '/vendor/sneat-bootstrap/app-calendar-events.js' %}"></script>
