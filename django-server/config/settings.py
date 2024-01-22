@@ -24,11 +24,9 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 environ.Env.read_env(
-    env_file=os.path.join(BASE_DIR, 'key.config')
+    env_file=os.path.join(BASE_DIR, '.env')
 )
 
-# 구글 드라이브 스토리지용 키
-GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = os.path.join(BASE_DIR, 'gdkey.config')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -193,7 +191,8 @@ ASGI_APPLICATION = "chat.asgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default':
+    {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'aivledb',
         'USER': env('DB_MASTER_USER_ID'),
@@ -201,22 +200,27 @@ DATABASES = {
         'HOST': env('DB_HOST'),
         'PORT': '5432',
     }
+    if env('ENVIRONMENT') == "PRODUCTION" else
+    {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # 데이터베이스 파일 경로
+    }
 }
 
-# AWS Setting
-AWS_REGION = 'ap-northeast-2'
-AWS_STORAGE_BUCKET_NAME = 'ktaivle-team3-bucket'
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 
+if env('ENVIRONMENT') == "PRODUCTION":
+    # AWS Setting
+    AWS_REGION = 'ap-northeast-2'
+    AWS_STORAGE_BUCKET_NAME = 'ktaivle-team3-bucket'
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
-    AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
+        AWS_STORAGE_BUCKET_NAME, AWS_REGION)
 
-
-# Media Setting
-MEDIA_URL = "https://%s/media/" % AWS_S3_CUSTOM_DOMAIN
-DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
+    # Media Setting
+    MEDIA_URL = "https://%s/media/" % AWS_S3_CUSTOM_DOMAIN
+    DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
 
 
 # Password validation
