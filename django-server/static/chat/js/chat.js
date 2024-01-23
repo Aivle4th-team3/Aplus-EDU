@@ -65,7 +65,7 @@ window.addEventListener("DOMContentLoaded", function () {
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         // 저장된 mp3파일 재생
-        var base64EncodedAudio = data.tts;
+        var base64EncodedAudio = data.audioMessage;
         // Base64 디코딩
         var binaryAudio = atob(base64EncodedAudio);
         // ArrayBuffer로 변환
