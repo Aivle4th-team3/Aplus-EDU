@@ -4,6 +4,7 @@ from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from .models import User
 
 
+# Form: HTML 입력 폼
 # 기본 가입 폼 추가
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(required=False)
@@ -46,9 +47,11 @@ class CustomSocialSignupForm(SocialSignupForm):
         return user
 
 
+# ModelForm: model(User)로부터 필드정보를 읽어 자동으로 폼 필드 설정
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
+        # 추가 설정 해주려고 따로 그룹화
         fields = ['first_name', 'last_name', 'email',
                   'country', 'phone_number', 'avatar']
 

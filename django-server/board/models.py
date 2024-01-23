@@ -7,6 +7,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 
 
+# 게시글 모델
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
@@ -25,7 +26,9 @@ class Post(models.Model):
         return reverse("board:detail", args=[self.id])
 
 
+# Post Model 상속
 class Community(Post):
+    # 추가할 것 없으니까 스켈레톤 구현
     pass
 
 

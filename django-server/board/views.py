@@ -5,6 +5,9 @@ from .forms import *
 # Create your views here.
 
 
+# board에서 파생되는 community, notice, qna. View를 생성하는 클래스
+# View의 구현은 동일한걸 사용한다.
+# 타입을 만들기 위해 Model, ModelFrom, namespace를 인수로 받아 만든다.
 class Which:
     def __init__(self, BoardModel, BoardModelForm, app_name):
         self.BoardModel = BoardModel

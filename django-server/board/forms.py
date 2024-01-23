@@ -18,6 +18,7 @@ class PostModelForm(forms.ModelForm):
         }
 
 
+# 각 Model에 맞는 ModelForm 스켈레톤 구현
 class CommunityModelForm(PostModelForm):
     class Meta(PostModelForm.Meta):
         model = Community

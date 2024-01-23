@@ -2,6 +2,7 @@ from config.settings import BASE_DIR
 from lecture.models import Lecture
 
 
+# 명언 입력
 def context_processor(request):
     dir = BASE_DIR / 'static/common/lifeQuotes.txt'
 

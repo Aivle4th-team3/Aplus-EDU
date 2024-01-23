@@ -8,13 +8,16 @@ from chat.services.tts import tts
 import urllib.parse
 import json
 
+# Consumer: 메시지를 받아서 작업 수행
 class ChatConsumer(WebsocketConsumer):
+    # 연결 관리
     def connect(self):
         self.accept()
 
     def disconnect(self, close_code):
         pass
 
+    # 데이터 처리
     def receive(self, text_data):
         # 쿼리 문자열 파싱 /?key=value
         query_string = self.scope['query_string'].decode('utf8')
@@ -24,11 +27,11 @@ class ChatConsumer(WebsocketConsumer):
         # 방 파라미터 추출
         user_id = self.scope['url_route']['kwargs']['room_name']
 
-        # 참조 객체들
+        # DB 참조 객체
         video = Video.objects.get(id=video_id)
         user = User.objects.get(id=user_id)
         # 이전 메시지들
-        user_messages = Message.objects.filter(user=user, video=video)
+        history = Message.objects.filter(user=user, video=video)
 
 
         # 입력 받은 질문
@@ -37,7 +40,7 @@ class ChatConsumer(WebsocketConsumer):
         message_time = datetime.now()
 
         # 챗봇 응답
-        answer, user_message_embedded, bot_message_embedded = talk_to_bot(message, user_messages)
+        answer, user_message_embedded, bot_message_embedded = talk_to_bot(message, history)
         answer_time = datetime.now()
 
         print("query", message)
