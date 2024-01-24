@@ -1,4 +1,3 @@
-import re
 import json
 from itertools import groupby
 from django.shortcuts import render
@@ -8,12 +7,49 @@ from config.settings import chatbot
 from accounts.models import User
 from lecture.models import Video
 from chat.models import Message
-from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 # Create your views here.
 
+# 쓰레딩
+def __threading(memory, statements):
+    # 결과 저장할 가변 리스트
+    # question, answer, test_paper, evaluation
+    eval_results = [['', '', '', ''] for _ in range(len(statements))]
+
+    threads = []
+    for eval_result, statement in zip(eval_results, statements):
+        question = statement.question
+        answer = statement.answer
+        test = chatbot.test(memory)  # 질문에 답하는 테스트 함수
+
+        thread = Thread(target=chatbot.eval_test, args=(*[question, answer], test, eval_result))
+        threads.append(thread)
+
+    # 각각 쓰레드 수행
+    for th in threads:
+        th.start()
+    # 생성한 쓰레드 종료를 기다림
+    for th in threads:
+        th.join()
+
+    # 결과
+    explanations = []
+    scores = []
+    test_papers = []
+    for er in eval_results:
+        print(*map(': '.join, zip(["문제", "답", "풀이", "점수 및 보완할 부분"], er)), sep='\n')
+        idx = er[3].find(':')
+        if idx!=-1:
+            point, explain = er[3][:idx], er[3][idx+1:]
+        else:
+            point, explain = 0, "응답 오류"
+        explanations.append(explain)
+        test_papers.append(er[2])
+        point = int(point)
+        scores.append(point)
+
+    return scores, explanations, test_papers
 
 @xframe_options_exempt
 def evaluation(request, lecture_name, video_name):
@@ -23,41 +59,17 @@ def evaluation(request, lecture_name, video_name):
         video_id = request.POST['video_id']
         video = Video.objects.get(id=video_id)
 
-        # 메시지검색
-        chat_messages = Message.objects.filter(user=user_id, video=video_id)
+        # 과거 채팅 메시지들
+        memory = Message.objects.filter(user=user_id, video=video_id)
 
         # 문제지 & 정답지
         statements = Video.objects.get(id=video_id).testpapers.all()
 
-        # 결과 저장할 가변 리스트
-        eval_results = [['', '', '', ''] for i in range(len(statements))]
+        # 쓰레딩 처리
+        scores, explanations, test_papers = __threading(memory, statements)
 
-        # 쓰레딩
-        threads = []
-        for eval_result, statement in zip(eval_results, statements):
-            threads.append(Thread(target=chatbot.eval_test, args=(
-                statement.question, statement.answer, chatbot.test(chat_messages), eval_result)))
-
-        for th in threads:
-            th.start()
-        for th in threads:
-            th.join()
-
-        # 결과
-        score, correct_count, wrong_count = 0, 0, 0
-        explanations = []
-        scores = []
-        for er in eval_results:
-            print(
-                *map(': '.join, zip(["문제", "답", "풀이", "점수 및 보완할 부분"], er)), sep='\n')
-            idx = er[3].find(':')
-            point, explain = er[3][:idx], er[3][idx+1:]
-            explanations.append(explain)
-            # gpt가 다른 대답 뱉으면 문제 생길 소지 있음.
-            point = int(point)
-            scores.append(point)
-
-        mean_score = sum(scores)/len(scores)
+        # 결과 정리
+        mean_score = sum(scores)/(len(scores) if len(scores) else 1)
         correct_count = sum(1 for score in scores if score >= 70)
         wrong_count = len(scores) - correct_count
 
@@ -66,9 +78,10 @@ def evaluation(request, lecture_name, video_name):
         instance.save()
 
         # 이번 평가의 점수와 설명
-        evals = [{'score': score, 'explation': explation,
-                  'student_saying': er[2], }
-                 for score, explation, er in zip(scores, explanations, eval_results)]
+        evals = [{'score': score,
+                  'explation': explation,
+                  'student_saying': test_paper,
+                  } for score, explation, test_paper in zip(scores, explanations, test_papers)]
 
         # 유저당 점수의 기록
         test_results = TestResult.objects.filter(user=user, video=video)
