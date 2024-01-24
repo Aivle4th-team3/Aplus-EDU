@@ -3,7 +3,7 @@ from datetime import datetime
 from lecture.models import Video
 from accounts.models import User
 from chat.models import Message
-from chat.services.talk_to_bot import talk_to_bot
+from config.settings import chatbot
 from chat.services.tts import tts
 import urllib.parse
 import json
@@ -39,23 +39,24 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json["message"]
         message_time = datetime.now()
 
+        # 현재 메시지와 기억 저장소 역할의 메시지를 전송
         # 챗봇 응답
-        answer, user_message_embedded, bot_message_embedded = talk_to_bot(message, history)
+        bot_message, user_message_embedded, bot_message_embedded = chatbot.chat(message, history)
         answer_time = datetime.now()
 
         print("query", message)
-        print("answer", answer)
+        print("answer", bot_message)
 
 
         # gpt 답변 tts로 변환
-        audio_message = tts(answer)
+        audio_message = tts(bot_message)
 
         # Message 생성
         instance = Message(
             user=user, video=video,
-            user_message=message, bot_message=answer, user_time=message_time, bot_time=answer_time,
+            user_message=message, bot_message=bot_message, user_time=message_time, bot_time=answer_time,
             user_message_embedded=user_message_embedded, bot_message_embedded=bot_message_embedded)
         # 데이터베이스에 저장
         instance.save()
 
-        self.send(text_data=json.dumps({"message": answer, "audioMessage": audio_message}))
+        self.send(text_data=json.dumps({"message": bot_message, "audioMessage": audio_message}))
