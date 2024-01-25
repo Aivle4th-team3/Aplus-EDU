@@ -12,39 +12,23 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 
 # 쓰레딩
 async def __threading(memory, statements):
-    # 결과 저장할 가변 리스트
-    # question, answer, test_paper, evaluation
-    eval_results = [['', '', '', ''] for _ in range(len(statements))]
+    # 질문에 답하는 테스트 함수
+    test = chatbot.test(memory)
 
-    threads = []
-    for eval_result, statement in zip(eval_results, statements):
-        question = statement.question
-        answer = statement.answer
-        test = chatbot.test(memory)  # 질문에 답하는 테스트 함수
+    # chatbot을 사용한 평가함수 호출
+    eval_test = chatbot.eval(test)
 
-        thread = asyncio.to_thread(chatbot.eval_test, question, answer, test, eval_result)
-        threads.append(thread)
+    # 동기 함수를 비동기 함수로 변경
+    threads = [asyncio.to_thread(eval_test, statement.question, statement.answer) for statement in statements]
 
-    # 각각 쓰레드 수행
-    await asyncio.gather(*threads)
+    # 각각 쓰레드를 모아서 수행 기다림
+    results = await asyncio.gather(*threads)
 
     # 결과
-    explanations = []
-    scores = []
-    test_papers = []
-    for er in eval_results:
-        print(*map(': '.join, zip(["문제", "답", "풀이", "점수 및 보완할 부분"], er)), sep='\n')
-        idx = er[3].find(':')
-        if idx!=-1:
-            point, explain = er[3][:idx], er[3][idx+1:]
-        else:
-            point, explain = 0, "응답 오류"
-        explanations.append(explain)
-        test_papers.append(er[2])
-        point = int(point)
-        scores.append(point)
+    descriptions = ["점수", "보완할 부분", "풀이" "문제", "답"]
+    print(*[' / '.join(map(': '.join, zip(descriptions, map(str, result)))) for result in results], sep='\n')
 
-    return scores, explanations, test_papers
+    return tuple(zip(*results))[:3]
 
 @xframe_options_exempt
 def evaluation(request, lecture_name, video_name):
@@ -66,8 +50,9 @@ def evaluation(request, lecture_name, video_name):
         # 비동기 작업에서 동기적인 장고 ORM 쿼리를 실행하면 오류가 생김. 그래서 풀어준다.
 
         # 결과 정리
+        cutline = 70
         mean_score = sum(scores)/(len(scores) if len(scores) else 1)
-        correct_count = sum(1 for score in scores if score >= 70)
+        correct_count = sum(1 for score in scores if score >= cutline)
         wrong_count = len(scores) - correct_count
 
         # TestResult 종합 점수로 데이터베이스에 저장
