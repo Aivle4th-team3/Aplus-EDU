@@ -2,17 +2,16 @@ import json
 from itertools import groupby
 from django.shortcuts import render
 from .models import TestResult
-from threading import Thread
+import asyncio
 from config.settings import chatbot
 from accounts.models import User
 from lecture.models import Video
 from chat.models import Message
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.clickjacking import xframe_options_exempt
-# Create your views here.
 
 # 쓰레딩
-def __threading(memory, statements):
+async def __threading(memory, statements):
     # 결과 저장할 가변 리스트
     # question, answer, test_paper, evaluation
     eval_results = [['', '', '', ''] for _ in range(len(statements))]
@@ -23,15 +22,11 @@ def __threading(memory, statements):
         answer = statement.answer
         test = chatbot.test(memory)  # 질문에 답하는 테스트 함수
 
-        thread = Thread(target=chatbot.eval_test, args=(*[question, answer], test, eval_result))
+        thread = asyncio.to_thread(chatbot.eval_test, question, answer, test, eval_result)
         threads.append(thread)
 
     # 각각 쓰레드 수행
-    for th in threads:
-        th.start()
-    # 생성한 쓰레드 종료를 기다림
-    for th in threads:
-        th.join()
+    await asyncio.gather(*threads)
 
     # 결과
     explanations = []
@@ -66,7 +61,9 @@ def evaluation(request, lecture_name, video_name):
         statements = Video.objects.get(id=video_id).testpapers.all()
 
         # 쓰레딩 처리
-        scores, explanations, test_papers = __threading(memory, statements)
+        scores, explanations, test_papers = asyncio.run(__threading(memory, [*statements]))
+        # statements는 장고 ORM 객체
+        # 비동기 작업에서 동기적인 장고 ORM 쿼리를 실행하면 오류가 생김. 그래서 풀어준다.
 
         # 결과 정리
         mean_score = sum(scores)/(len(scores) if len(scores) else 1)
