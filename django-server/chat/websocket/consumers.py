@@ -32,6 +32,7 @@ class ChatConsumer(WebsocketConsumer):
         user = User.objects.get(id=user_id)
         # 이전 메시지들
         history = Message.objects.filter(user=user, video=video)
+        chat_log = [message.to_exchange() for message in history]
 
 
         # 입력 받은 질문
@@ -41,7 +42,7 @@ class ChatConsumer(WebsocketConsumer):
 
         # 현재 메시지와 기억 저장소 역할의 메시지를 전송
         # 챗봇 응답
-        bot_message, user_message_embedded, bot_message_embedded = chatbot.chat(message, history)
+        bot_message, user_message_embedded, bot_message_embedded = chatbot.chat(message, chat_log)
         answer_time = datetime.now()
 
         print("query", message)

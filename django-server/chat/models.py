@@ -2,6 +2,7 @@ from django.db import models
 from pgvector.django import VectorField
 from accounts.models import User
 from lecture.models import Video
+from student_ai import Exchange
 
 # Create your models here.
 
@@ -18,3 +19,6 @@ class Message(models.Model):
     bot_message = models.TextField()
     user_message_embedded = VectorField(dimensions=1536)
     bot_message_embedded = VectorField(dimensions=1536)
+
+    def to_exchange(self):
+        return Exchange(self.user_message, self.user_message_embedded, self.bot_message, self.bot_message_embedded)

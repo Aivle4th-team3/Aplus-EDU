@@ -11,9 +11,9 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 # 쓰레딩
-async def __threading(memory, statements):
+async def __threading(chat_log, statements):
     # 질문에 답하는 테스트 함수
-    test = chatbot.test(memory)
+    test = chatbot.test(chat_log)
 
     # chatbot을 사용한 평가함수 호출
     eval_test = chatbot.eval(test)
@@ -39,15 +39,16 @@ def evaluation(request, lecture_name, video_name):
         video = Video.objects.get(id=video_id)
 
         # 과거 채팅 메시지들
-        memory = Message.objects.filter(user=user_id, video=video_id)
+        messages = Message.objects.filter(user=user_id, video=video_id)
+        chat_log = [message.to_exchange() for message in messages]
 
         # 문제지 & 정답지
         statements = Video.objects.get(id=video_id).testpapers.all()
 
         # 쓰레딩 처리
-        scores, explanations, test_papers = asyncio.run(__threading(memory, [*statements]))
+        scores, explanations, test_papers = asyncio.run(__threading(chat_log, [*statements]))
         # statements는 장고 ORM 객체
-        # 비동기 작업에서 동기적인 장고 ORM 쿼리를 실행하면 오류가 생김. 그래서 풀어준다.
+        # 비동기 작업에서 동기적인 장고 ORM 쿼리를 실행하면 오류가 생김. 그래서 재캡슐화한다.
 
         # 결과 정리
         cutline = 70
