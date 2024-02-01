@@ -334,4 +334,5 @@ chatbot = Chatbot(
     embedding_provider=env('EMBEDDING_PROVIDER'),
     embedding_model=env(env('EMBEDDING_PROVIDER')+'_EMBEDDING_MODEL'),
     embedding_api_key=env(env('EMBEDDING_PROVIDER')+'_API_KEY'),
+    vectorstore_provider=env('VECTORSTORE_PROVIDER'),
     is_test=False)
