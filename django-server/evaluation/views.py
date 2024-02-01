@@ -6,29 +6,32 @@ import asyncio
 from config.settings import chatbot
 from accounts.models import User
 from lecture.models import Video
-from chat.models import Message
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 # 쓰레딩
-async def __threading(chat_log, statements):
+async def __threading(tablename, statements):
     # 질문에 답하는 테스트 함수
-    test = chatbot.test(chat_log)
+    test = chatbot.test(tablename)
 
     # chatbot을 사용한 평가함수 호출
     eval_test = chatbot.eval(test)
 
+    print(statements, tablename)
     # 동기 함수를 비동기 함수로 변경
     threads = [asyncio.to_thread(eval_test, statement.question, statement.answer) for statement in statements]
 
     # 각각 쓰레드를 모아서 수행 기다림
     results = await asyncio.gather(*threads)
 
+    print(results)
+
     # 결과
     descriptions = ["점수", "보완할 부분", "풀이" "문제", "답"]
     print(*[' / '.join(map(': '.join, zip(descriptions, map(str, result)))) for result in results], sep='\n')
 
-    return tuple(zip(*results))[:3]
+    print(tuple(zip(*results)))
+    return tuple(zip(*results))[:3] if results else (0, "None", "")
 
 @xframe_options_exempt
 def evaluation(request, lecture_name, video_name):
@@ -37,16 +40,13 @@ def evaluation(request, lecture_name, video_name):
         user = User.objects.get(id=user_id)
         video_id = request.POST['video_id']
         video = Video.objects.get(id=video_id)
-
-        # 과거 채팅 메시지들
-        messages = Message.objects.filter(user=user_id, video=video_id)
-        chat_log = [message.to_exchange() for message in messages]
+        tablename = f"{video_id}-{user_id}"
 
         # 문제지 & 정답지
         statements = Video.objects.get(id=video_id).testpapers.all()
 
         # 쓰레딩 처리
-        scores, explanations, test_papers = asyncio.run(__threading(chat_log, [*statements]))
+        scores, explanations, test_papers = asyncio.run(__threading(tablename, [*statements]))
         # statements는 장고 ORM 객체
         # 비동기 작업에서 동기적인 장고 ORM 쿼리를 실행하면 오류가 생김. 그래서 재캡슐화한다.
 

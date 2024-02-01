@@ -9,6 +9,8 @@ import urllib.parse
 import json
 
 # Consumer: 메시지를 받아서 작업 수행
+
+
 class ChatConsumer(WebsocketConsumer):
     # 연결 관리
     def connect(self):
@@ -24,40 +26,37 @@ class ChatConsumer(WebsocketConsumer):
         params = urllib.parse.parse_qs(query_string)
         # 쿼리 파라미터 추출
         video_id = params.get('video_id', [None])[0]
-        # 방 파라미터 추출
+        # 채팅방 파라미터 추출
         user_id = self.scope['url_route']['kwargs']['room_name']
-
         # DB 참조 객체
         video = Video.objects.get(id=video_id)
         user = User.objects.get(id=user_id)
-        # 이전 메시지들
-        history = Message.objects.filter(user=user, video=video)
-        chat_log = [message.to_exchange() for message in history]
-
+        # video-user 쌍의 테이블명
+        tablename = f"{video_id}-{user_id}"
 
         # 입력 받은 질문
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         message_time = datetime.now()
 
-        # 현재 메시지와 기억 저장소 역할의 메시지를 전송
+        # 검색할 테이블명과 현재 메시지를 전송
+        # chatbot은 데이터베이스를 가지고 이전 메시지들을 기억
         # 챗봇 응답
-        bot_message, user_message_embedded, bot_message_embedded = chatbot.chat(message, chat_log)
+        bot_message = chatbot.chat(tablename, message)
         answer_time = datetime.now()
 
         print("query", message)
         print("answer", bot_message)
 
-
-        # gpt 답변 tts로 변환
+        # 답변을 tts로 변환
         audio_message = tts(bot_message)
 
         # Message 생성
         instance = Message(
             user=user, video=video,
-            user_message=message, bot_message=bot_message, user_time=message_time, bot_time=answer_time,
-            user_message_embedded=user_message_embedded, bot_message_embedded=bot_message_embedded)
+            user_message=message, bot_message=bot_message,
+            user_time=message_time, bot_time=answer_time)
         # 데이터베이스에 저장
         instance.save()
-
-        self.send(text_data=json.dumps({"message": bot_message, "audioMessage": audio_message}))
+        self.send(text_data=json.dumps(
+            {"message": bot_message, "audioMessage": audio_message}))
