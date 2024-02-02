@@ -24,13 +24,10 @@ async def __threading(tablename, statements):
     # 각각 쓰레드를 모아서 수행 기다림
     results = await asyncio.gather(*threads)
 
-    print(results)
-
     # 결과
     descriptions = ["점수", "보완할 부분", "풀이" "문제", "답"]
     print(*[' / '.join(map(': '.join, zip(descriptions, map(str, result)))) for result in results], sep='\n')
 
-    print(tuple(zip(*results)))
     return tuple(zip(*results))[:3] if results else (0, "None", "")
 
 @xframe_options_exempt

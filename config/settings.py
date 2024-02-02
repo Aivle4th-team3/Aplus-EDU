@@ -327,7 +327,7 @@ CKEDITOR_CONFIGS = {
 
 # AI 패키지 사용
 chatbot = Chatbot(
-    llm_provider=env('AI_PROVIDER'),
+    llm_provider=env('LLM_PROVIDER'),
     embedding_provider=env('EMBEDDING_PROVIDER'),
     vectorstore_provider=env('VECTORSTORE_PROVIDER'),
     is_test=False)

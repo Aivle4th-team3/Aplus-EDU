@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from math import ceil
 from .models import *
 from .forms import *
-# Create your views here.
 
 
 # board에서 파생되는 community, notice, qna. View를 생성하는 클래스

@@ -1,9 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
-from django.http import JsonResponse
 from .models import Lecture, Video
-from datetime import timedelta
-# Create your views here.
+
 
 def showcase(request):
     subject = request.GET.get('subject')
