@@ -3,6 +3,6 @@ from .models import Message
 
 # Register your models here.
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('user', 'video', 'user_message', 'bot_message')
+    list_display = ('conversation', 'user_message', 'bot_message')
 
 admin.site.register(Message, MessageAdmin)

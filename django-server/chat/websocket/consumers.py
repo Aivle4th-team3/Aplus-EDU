@@ -2,9 +2,9 @@ from channels.generic.websocket import WebsocketConsumer
 from datetime import datetime
 from lecture.models import Video
 from accounts.models import User
-from chat.models import Message
-from config.settings import chatbot
+from chat.models import Conversation
 from chat.services.tts import tts
+from config.settings import chatbot
 import urllib.parse
 import json
 
@@ -51,12 +51,15 @@ class ChatConsumer(WebsocketConsumer):
         # 답변을 tts로 변환
         audio_message = tts(bot_message)
 
-        # Message 생성
-        instance = Message(
-            user=user, video=video,
+        # 대화 선택, 없으면 생성
+        conversation, is_created = Conversation.objects.get_or_create(user=user, video=video)
+        # 대화에 메시지 추가
+        conversation.messages.create(
             user_message=message, bot_message=bot_message,
-            user_time=message_time, bot_time=answer_time)
-        # 데이터베이스에 저장
-        instance.save()
-        self.send(text_data=json.dumps(
-            {"message": bot_message, "audioMessage": audio_message}))
+            user_time=message_time, bot_time=answer_time,
+        )
+
+        self.send(text_data=json.dumps({
+            "message": bot_message,
+            "audioMessage": audio_message
+        }))

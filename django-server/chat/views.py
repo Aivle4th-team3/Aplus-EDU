@@ -3,12 +3,13 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_http_methods
-from .models import Message
+from .models import Conversation
 from accounts.models import User
 from lecture.models import Video
 from .services.stt import stt
 
 
+# iframe 허용
 @xframe_options_exempt
 def chat(request, lecture_name, video_name):
     # user, video id를 POST로 전송 받음
@@ -18,7 +19,8 @@ def chat(request, lecture_name, video_name):
     video = Video.objects.get(id=video_id)
 
     # 메시지검색
-    messages = Message.objects.filter(user=user, video=video)
+    conversation, is_created = Conversation.objects.get_or_create(user=user, video=video)
+    messages = conversation.messages.all()
 
     # 기록 읽기
     history = [[{'type': 'user', 'message': message.user_message, 'time': message.user_time},

@@ -2,13 +2,32 @@ from django.db import models
 from accounts.models import User
 from lecture.models import Video
 
-# Create your models here.
+
+class Conversation(models.Model):
+    """
+    - N:1 relationship with User
+    - N:1 relationship with Video
+    """
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'video'),
+                name='user-video composite key'
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.user}/{self.video}'
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, null=False)
 
 
 class Message(models.Model):
-    # enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE, null=False, related_name='messages')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, null=False)
+    """
+    - N:1 relationship with Conversation
+    """
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, null=False, related_name='messages')
 
     user_time = models.DateTimeField(null=True)
     bot_time = models.DateTimeField(null=True)
