@@ -123,6 +123,7 @@
 Aplus-EDU
 ├─ .git
 ├─ .gitignore
+├─ .gitmodules
 ├─ accounts
 │  ├─ admin.py
 │  ├─ apps.py
@@ -327,41 +328,42 @@ Aplus-EDU
 │        ├─ core.css
 │        ├─ helpers.js
 │        └─ theme-default.css
-└─ templates
-   ├─ account
-   │  ├─ consent.html
-   │  ├─ login.html
-   │  ├─ mypage.html
-   │  ├─ password_reset.html
-   │  ├─ signup.html
-   │  └─ socialbuttons.html
-   ├─ board
-   │  ├─ board.html
-   │  ├─ detail.html
-   │  └─ post_form.html
-   ├─ chat
-   │  ├─ loading.html
-   │  └─ page.html
-   ├─ evaluation
-   │  ├─ my.html
-   │  └─ page.html
-   ├─ frontdoor
-   │  ├─ base.html
-   │  ├─ happynewyear.html
-   │  ├─ index.html
-   │  └─ topbar.html
-   ├─ home
-   │  ├─ base.html
-   │  ├─ faq.html
-   │  ├─ layout.html
-   │  ├─ main.html
-   │  ├─ sidebar.html
-   │  └─ topbar.html
-   ├─ lecture
-   │  ├─ room.html
-   │  └─ showcase.html
-   └─ socialaccount
-      └─ signup.html
+├─ templates
+│  ├─ account
+│  │  ├─ consent.html
+│  │  ├─ login.html
+│  │  ├─ mypage.html
+│  │  ├─ password_reset.html
+│  │  ├─ signup.html
+│  │  └─ socialbuttons.html
+│  ├─ board
+│  │  ├─ board.html
+│  │  ├─ detail.html
+│  │  └─ post_form.html
+│  ├─ chat
+│  │  ├─ loading.html
+│  │  └─ page.html
+│  ├─ evaluation
+│  │  ├─ my.html
+│  │  └─ page.html
+│  ├─ frontdoor
+│  │  ├─ base.html
+│  │  ├─ happynewyear.html
+│  │  ├─ index.html
+│  │  └─ topbar.html
+│  ├─ home
+│  │  ├─ base.html
+│  │  ├─ faq.html
+│  │  ├─ layout.html
+│  │  ├─ main.html
+│  │  ├─ sidebar.html
+│  │  └─ topbar.html
+│  ├─ lecture
+│  │  ├─ room.html
+│  │  └─ showcase.html
+│  └─ socialaccount
+│     └─ signup.html
+└─ _student-ai
 
 ```
 
