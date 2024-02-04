@@ -27,7 +27,7 @@
       &nbsp;&nbsp;&nbsp;A+EDU는 능동적 학습 방법과 생성형 AI 기술을 결합한 자기주도 학습 서비스를 제공하여, 성취도 평가와 피드백을 통해 학습 과정의 부족한 부분을 보완하고 오개념 학습을 예방하는 교육 플랫폼입니다.
     </td>
     <td style="text-align: right;" width="350" height="300">
-      <img alt="learnig-pyramid" src="https://github.com/Aivle4-Team3/WAS/assets/26417221/0677b4b9-76ce-4a0e-89ab-f6d426de3f98"  width="350" height="250">
+      <img alt="learnig-pyramid" src="https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/f1a5af43-3b5e-44ab-952c-82ffb4a09e51"  width="350" height="250">
     </td>
   </tr>
 </table>
@@ -36,7 +36,7 @@
 
 |                                 [김영진](https://github.com/yxxngjxn)                                  |                                [김진우](https://github.com/MooYaHo1)                                |                                 [안진수](https://github.com/Awlstn)                                 |                                [유승호](https://github.com/pumple99)                                 |                                   [임형섭](https://github.com/h3lim)                                    |                               [정원철](https://github.com/NarciSource)                                |
 | :----------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
-| ![Youngjean](https://github.com/Aivle4-Team3/WAS/assets/26417221/26af60a9-667c-47ea-a084-62c203f5f566) | ![Jinwoo](https://github.com/Aivle4-Team3/WAS/assets/26417221/6dc5befa-c6c9-478e-a9f8-00499f440af7) | ![Jinsoo](https://github.com/Aivle4-Team3/WAS/assets/26417221/b8db93f4-4441-41d0-932c-8bffa109b4df) | ![Seungho](https://github.com/Aivle4-Team3/WAS/assets/26417221/c42e62e5-81ff-43ce-86e6-aad42763c439) | ![Hyeongseop](https://github.com/Aivle4-Team3/WAS/assets/26417221/6ed8c76b-4b12-43a5-8286-7ab3bf6a1363) | ![Woncheol](https://github.com/Aivle4-Team3/WAS/assets/26417221/051fde5c-720f-4fdd-9124-abca2f6d9345) |
+| ![Youngjean](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/e4372fb9-741e-4419-b529-4b4586645bdc) | ![Jinwoo](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/30448517-5e5f-4f78-bfd4-a6eca05b5012) | ![Jinsoo](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/5c877796-4478-48d7-b2d0-a0a1365b70ab) | ![Seungho](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/d91814c4-1348-45bd-8106-c8deac5280ba) | ![Hyeongseop](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/d03d5e7c-984d-4259-be84-e4e0f6c6f217) | ![Woncheol](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/661501ee-036f-4a3a-b766-d63b2c501164) |
 
 ## 🎥 데모
 
@@ -112,7 +112,7 @@
 
 ## 🏗️ ERD
 
-![ERD](https://github.com/Aivle4-Team3/WAS/assets/26417221/15810f28-e93b-458b-b4c4-26935dc4a838)
+![ERD](https://github.com/Aivle4-Team3/Aplus-EDU/assets/26417221/fcbb189a-3ca5-42dc-96d4-39509d8ccc34)
 
 ## 📂 프로젝트 구조
 
