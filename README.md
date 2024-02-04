@@ -122,6 +122,7 @@
 ```
 Aplus-EDU
 ├─ .git
+├─ .gitattributes
 ├─ .gitignore
 ├─ .gitmodules
 ├─ accounts
@@ -228,7 +229,6 @@ Aplus-EDU
 ├─ static
 │  ├─ accounts
 │  │  ├─ css
-│  │  │  ├─ sb-admin-2.min.css
 │  │  │  ├─ signup.css
 │  │  │  └─ social-btn.css
 │  │  ├─ img
@@ -244,11 +244,8 @@ Aplus-EDU
 │  ├─ chat
 │  │  ├─ css
 │  │  │  ├─ app-chat.css
-│  │  │  ├─ core.css
 │  │  │  ├─ loading.css
-│  │  │  ├─ record-voice.css
-│  │  │  ├─ theme-default.css
-│  │  │  └─ three-dots.css
+│  │  │  └─ record-voice.css
 │  │  ├─ img
 │  │  │  └─ gpt_logo.svg
 │  │  └─ js
@@ -269,9 +266,9 @@ Aplus-EDU
 │  ├─ frontdoor
 │  │  ├─ css
 │  │  │  ├─ avatar.css
+│  │  │  ├─ background.css
 │  │  │  ├─ footer.css
-│  │  │  ├─ happynewyear.css
-│  │  │  └─ styles.css
+│  │  │  └─ happynewyear.css
 │  │  ├─ img
 │  │  │  ├─ babyRobot__1.png
 │  │  │  ├─ babyRobot__2.png
@@ -316,6 +313,10 @@ Aplus-EDU
 │  │  └─ js
 │  │     └─ modal.js
 │  └─ vendor
+│     ├─ css
+│     │  ├─ bootstrap.css
+│     │  ├─ sb-admin-2.min.css
+│     │  └─ three-dots.css
 │     ├─ js
 │     │  ├─ bootstrap.js
 │     │  └─ menu.js
