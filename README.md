@@ -13,6 +13,7 @@
 -   [🎨 UI](#-ui)
 -   [🛠️ 기술 스택](#%EF%B8%8F-기술-스택)
 -   [⚙️ 구현 세부 사항](#%EF%B8%8F-구현-세부-사항)
+-   [📝 기술 블로그](https://aivle4-team3.github.io/Aplus-EDU)
 -   [🏗️ ERD](#%EF%B8%8F-erd)
 -   [📂 프로젝트 구조](#-프로젝트-구조)
 -   [🚀 실행 방법](#-실행-방법)
@@ -109,6 +110,9 @@
 -   Ollama를 사용해 로컬에서 LLM 모델 실행도 가능
 -   Vector Database를 사용한 컨텍스트 관리로 LLM의 기억 저장소 역할 - Chroma, FAISS, Pinecone
 -   AWS에서 EC2와 S3를 사용하여 웹 호스팅
+
+## [📝 기술 블로그](https://aivle4-team3.github.io/Aplus-EDU)
+
 
 ## 🏗️ ERD
 
