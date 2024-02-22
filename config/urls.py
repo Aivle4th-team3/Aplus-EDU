@@ -30,9 +30,6 @@ urlpatterns = [
     path('lecture/', include('lecture.urls')),
     path('chat/', include('chat.urls')),
     path('board/', include('board.urls')),
-    path('community/', include('board.urls_community')),
-    path('notice/', include('board.urls_notice')),
-    path('qna/', include('board.urls_qna')),
     path('evaluation/', include('evaluation.urls')),
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls'))

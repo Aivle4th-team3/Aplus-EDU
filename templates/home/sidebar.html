@@ -42,25 +42,25 @@
     </li>
 
     <li class="menu-item {% if request.resolver_match.url_name == 'board' %}active{% endif %} open">
-      <a href="{% url 'board:board' %}" class="menu-link">
+      <a href="{% url 'forum:board' %}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-slideshow"></i>
         <div class="text-truncate">게시판</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item {% if request.resolver_match.url_name == 'community' %}active{% endif %}">
-          <a href="{% url 'community:community' %}" class="menu-link">
+        <li class="menu-item {% if namespace == 'community' %}active{% endif %}">
+          <a href="{% url 'community:board' %}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-comment-detail"></i>
             <div class="text-truncate">자유게시판</div>
           </a>
         </li>
-        <li class="menu-item {% if request.resolver_match.url_name == 'qna' %}active{% endif %}">
-          <a href="{% url 'qna:qna' %}" class="menu-link">
+        <li class="menu-item {% if namespace == 'qna' %}active{% endif %}">
+          <a href="{% url 'qna:board' %}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-search"></i>
             <div class="text-truncate">질문게시판</div>
           </a>
         </li>
-        <li class="menu-item {% if request.resolver_match.url_name == 'notice' %}active{% endif %}">
-          <a href="{% url 'notice:notice' %}" class="menu-link">
+        <li class="menu-item {% if namespace == 'notice' %}active{% endif %}">
+          <a href="{% url 'notice:board' %}" class="menu-link">
             <i class="menu-icon tf-icons bx bx-info-circle"></i>
             <div class="text-truncate">공지사항</div>
           </a>

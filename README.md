@@ -152,11 +152,8 @@ Aplus-EDU
 │  ├─ models.py
 │  ├─ signals.py
 │  ├─ templatetags
-│  │  └─ namespace_tags.py
+│  │  └─ url_utils.py
 │  ├─ urls.py
-│  ├─ urls_community.py
-│  ├─ urls_notice.py
-│  ├─ urls_qna.py
 │  ├─ views.py
 │  └─ __init__.py
 ├─ chat
@@ -244,7 +241,7 @@ Aplus-EDU
 │  │  └─ css
 │  │     ├─ board.css
 │  │     ├─ detail.css
-│  │     └─ post_form.css
+│  │     └─ post.css
 │  ├─ chat
 │  │  ├─ css
 │  │  │  ├─ app-chat.css
@@ -344,7 +341,7 @@ Aplus-EDU
 │  ├─ board
 │  │  ├─ board.html
 │  │  ├─ detail.html
-│  │  └─ post_form.html
+│  │  └─ post.html
 │  ├─ chat
 │  │  ├─ loading.html
 │  │  └─ page.html
