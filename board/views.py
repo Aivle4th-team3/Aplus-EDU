@@ -21,13 +21,13 @@ class BoardListView(ListView):
 
         return queryset.filter(title__contains=self.search_key)
 
-    def get_paginate_by(self):
+    def get_paginate_by(self, queryset):
         return self.request.GET.get('page_size', '10')
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
-        for post in self.object_list:
+        for post in context['object_list']:
             post.category = 'Community' if hasattr(post, 'community') else \
                             'QnA' if hasattr(post, 'qna') else \
                             'Notice' if hasattr(post, 'notice') else 'Post'
