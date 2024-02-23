@@ -1,31 +1,29 @@
 from django.urls import path, include
-from . import views
 from .models import *
+from .views import *
+from .forms import *
+from django.views.generic import *
 
 
-forum_view = views.Which(Post, 'forum')
-qna_view = views.Which(QnA, 'qna')
-community_view = views.Which(Community, 'community')
-notice_view = views.Which(Notice, 'notice')
-
-def urlpatterns_of(view):
+def urlpatterns_of(model):
+    modelForm = postModelForm_for(model)
     return [
-        path('', view.board, name='board'),
-        path('<int:no>/', view.detail, name='detail'),
+        path('', BoardListView.as_view(model=model), name='board'),
+        path('<int:pk>/', BoardDetailView.as_view(model=model), name='detail'),
 
-        path('new/', view.post_create, name='create'),
-        path('update/<id>/', view.post_update, name='update'),
-        path('delete/<id>/', view.post_delete, name='delete'),
-        path('<int:id>/create/comment/', view.create_comment, name='create_comment'),
-        path('<int:id>/delete/comment/<int:comment_id>/', view.delete_comment, name='delete_comment'),
+        path('new/', BoardCreateView.as_view(form_class=modelForm), name='create'),
+        path('update/<int:pk>/', BoardUpdateView.as_view(model=model, form_class=modelForm), name='update'),
+        path('delete/<int:pk>/', BoardDeleteView.as_view(model=model), name='delete'),
+        path('<int:post_id>/create/comment/', CreateView.as_view(form_class=CommentForm), name='create_comment'),
+        path('<int:post_id>/delete/comment/<int:pk>/', CommentDeleteView.as_view(model=Comment), name='delete_comment'),
     ]
 
 urlpatterns = [
-    path('', include((urlpatterns_of(forum_view), 'forum'), namespace='forum')),
+    path('', include((urlpatterns_of(Post), 'forum'), namespace='forum')),
 
-    path('qna/', include((urlpatterns_of(qna_view), 'qna'), namespace='qna')),
+    path('qna/', include((urlpatterns_of(QnA), 'qna'), namespace='qna')),
 
-    path('community/', include((urlpatterns_of(community_view), 'community'), namespace='community')),
+    path('community/', include((urlpatterns_of(Community), 'community'), namespace='community')),
 
-    path('notice/', include((urlpatterns_of(notice_view), 'notice'), namespace='notice')),
+    path('notice/', include((urlpatterns_of(Notice), 'notice'), namespace='notice')),
 ]

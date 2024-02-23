@@ -239,9 +239,8 @@ Aplus-EDU
 │  │     └─ read-image.js
 │  ├─ board
 │  │  └─ css
-│  │     ├─ board.css
-│  │     ├─ detail.css
-│  │     └─ post.css
+│  │     ├─ post_detail.css
+│  │     └─ post_form.css
 │  ├─ chat
 │  │  ├─ css
 │  │  │  ├─ app-chat.css
@@ -339,9 +338,9 @@ Aplus-EDU
 │  │  ├─ signup.html
 │  │  └─ socialbuttons.html
 │  ├─ board
-│  │  ├─ board.html
-│  │  ├─ detail.html
-│  │  └─ post.html
+│  │  ├─ confirm_delete.html
+│  │  ├─ post_detail.html
+│  │  └─ post_form.html
 │  ├─ chat
 │  │  ├─ loading.html
 │  │  └─ page.html

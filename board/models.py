@@ -20,7 +20,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):  # redirect에 모델 인스턴스를 줬을 때 이 함수가 자동으로 실행됌
         # url 생성
-        return reverse(f"{self.namespace}:detail", args=[self.id])
+        return reverse(f"{self.__class__.__name__.lower()}:detail", args=[self.id])
 
 
 # Post Model 상속
@@ -43,6 +43,9 @@ class Comment(models.Model):
         Post, on_delete=models.CASCADE, related_name='comments')
     message = models.TextField()
     created = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse("forum:detail", args=[self.post.id])
 
 
 class Tag(models.Model):
