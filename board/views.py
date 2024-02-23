@@ -24,6 +24,11 @@ class BoardListView(ListView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
+        for post in self.object_list:
+            post.category = 'Community' if hasattr(post, 'community') else \
+                            'QnA' if hasattr(post, 'qna') else \
+                            'Notice' if hasattr(post, 'notice') else 'Post'
+
         # pagination
         namespace = self.request.resolver_match.namespace
         page = int(self.request.GET.get('page', 1))

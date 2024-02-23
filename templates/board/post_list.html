@@ -62,9 +62,11 @@
                                     <div class="d-flex align-items-center">
                                         <a class="d-flex flex-column justify-content-center" :href="'{% current_url 'board' %}'+post.id">
                                             <div>
-                                                <span v-if="post.category=='Notice'">[공지]</span>
-                                                <span v-if="post.category=='QnA'">[질문]</span>
-                                                <span v-if="post.category=='Community'">[자유]</span>
+                                                {% if namespace == 'forum' %}
+                                                    <span v-if="post.category=='Notice'">[공지]</span>
+                                                    <span v-if="post.category=='QnA'">[질문]</span>
+                                                    <span v-if="post.category=='Community'">[자유]</span>
+                                                {% endif %}
                                                 <span class="text-body text-wrap fw-medium" :class="{'notice': post.category=='Notice'}">[[ post.title ]]</span>
                                                 <span class="comments-count">[[ post.comments_count ]]</span>
                                             </div>
