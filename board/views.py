@@ -1,6 +1,5 @@
 from .forms import CommentForm
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
-from math import ceil
 from typing import Any
 from django.http.request import HttpRequest
 from django.urls import reverse
@@ -8,6 +7,7 @@ from django.urls import reverse
 # 전체 목록 보기
 class BoardListView(ListView):
     template_name = 'board/post_list.html'
+    context_object_name = 'post_list'
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         super().setup(request, *args, **kwargs)
@@ -21,6 +21,9 @@ class BoardListView(ListView):
 
         return queryset.filter(title__contains=self.search_key)
 
+    def get_paginate_by(self):
+        return self.request.GET.get('page_size', '10')
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
@@ -29,21 +32,14 @@ class BoardListView(ListView):
                             'QnA' if hasattr(post, 'qna') else \
                             'Notice' if hasattr(post, 'notice') else 'Post'
 
-        # pagination
         namespace = self.request.resolver_match.namespace
-        page = int(self.request.GET.get('page', 1))
-        per = int(self.request.GET.get('per', 10))
-        total = len(self.object_list)
-        last = ceil(total/per)
-        board_list = range(1, last+1)
-        per_list = [7, 10, 20, 50]
-        start = per*(page-1)
-        end = per*page
+        page_size = self.get_paginate_by(self.get_queryset())
+        page_size_list = ['7', '10', '20', '50']
 
         context.update({
             'namespace': namespace,
-            'post_all': self.object_list[start:end], 'q': self.search_key, 'page': page, 'per': per,
-            'board_list': board_list, 'per_list': per_list, 'total': total, 'last': last
+            'q': self.search_key,
+            'page_size':page_size, 'page_size_list': page_size_list,
         })
         return context
 

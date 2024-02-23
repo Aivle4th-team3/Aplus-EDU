@@ -15,7 +15,6 @@
                     <div class="card-header d-flex flex-wrap py-0 justify-content-sm-between">
                         <div class="me-5 ms-n2 pe-5">
                             <form method="get">
-                                {% csrf_token %}
                                 <label><input name="q" type="search" class="form-control" placeholder="{{ q|default:'Search' }}" v-model="searchQuery"/></label>
                             </form>
                         </div>
@@ -24,10 +23,9 @@
                                 <div class="mt-0" >
                                     <label>
                                         <form method="get">
-                                            {% csrf_token %}
-                                            <select name="per" class="form-select" onchange="this.form.submit();">
-                                                {% for i in per_list %}
-                                                    <option value="{{i}}" {% if i == per %}selected{% endif %}>{{i}}</option>
+                                            <select name="page_size" class="form-select" onchange="this.form.submit();">
+                                                {% for i in page_size_list %}
+                                                    <option value="{{i}}" {% if i == page_size %}selected{% endif %}>{{i}}</option>
                                                 {% endfor %}
                                             </select>
                                         </form>
@@ -90,17 +88,23 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="paging_simple_numbers">
                                 <ul class="pagination">
-                                    <li class="paginate_button page-item previous {% if page == 1 %}disabled{% endif %}">
-                                        <a href="{{request.path}}?page={{page|add:'-1'}}" aria-disabled="true" role="link" data-dt-idx="previous" tabindex="0" class="page-link">이전</a>
-                                    </li>
-                                    {% for i in board_list %}
-                                    <li class="paginate_button page-item {% if i == page %}active{% endif %}">
-                                        <a href="{{request.path}}?page={{i}}" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">{{ i }}</a>
-                                    </li>
+                                    {% if page_obj.has_previous %}
+                                        <li class="paginate_button page-item previous">
+                                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&page_size={{ page_size }}" class="page-link">이전</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in paginator.page_range %}
+                                        <li class="paginate_button page-item {% if i == page_obj.number %}active{% endif %}">
+                                            <a href="{{ request.path }}?page={{ i }}&page_size={{ page_size }}" class="page-link">{{ i }}</a>
+                                        </li>
                                     {% endfor %}
-                                    <li class="paginate_button page-item next {% if page == last %}disabled{% endif %}" >
-                                        <a href="{{request.path}}?page={{page|add:'1'}}" role="link" data-dt-idx="next" tabindex="0" class="page-link">다음</a>
-                                    </li>
+
+                                    {% if page_obj.has_next %}
+                                        <li class="paginate_button page-item next {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}" >
+                                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}&page_size={{ page_size }}" class="page-link">다음</a>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -113,8 +117,8 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
 
-        var post_all = [
-            {% for post in post_all %}
+        var post_list = [
+            {% for post in post_list %}
             {
                 id: '{{ post.id }}',
                 title: '{{ post.title }}',
@@ -135,7 +139,7 @@
             },
             computed: {
                 posts() {
-                    return post_all.filter(post => {
+                    return post_list.filter(post => {
                         return post.title.toLowerCase().includes(this.searchQuery)
                             || post.author.toLowerCase().includes(this.searchQuery);
                     });
