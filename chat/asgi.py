@@ -1,5 +1,5 @@
 import os
-from .websocket import routing
+from .websocket.urls import urlpatterns
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -17,7 +17,7 @@ application = ProtocolTypeRouter(
         "http": django_asgi_app,
         # 웹소켓 등록
         "websocket": AllowedHostsOriginValidator(
-            AuthMiddlewareStack(URLRouter(routing.websocket_urlpatterns))
+            AuthMiddlewareStack(URLRouter(urlpatterns))
         ),
     }
 )

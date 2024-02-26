@@ -174,7 +174,7 @@ Aplus-EDU
 │  ├─ views.py
 │  ├─ websocket
 │  │  ├─ consumers.py
-│  │  └─ routing.py
+│  │  └─ urls.py
 │  └─ __init__.py
 ├─ config
 │  ├─ asgi.py
