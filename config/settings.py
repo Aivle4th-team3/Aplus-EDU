@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
 
     # 사용자 앱 페이지
+    'core',
     'accounts',
     'home',
     'lecture',
