@@ -306,9 +306,11 @@ Aplus-EDU
 │  │  │  ├─ home.css
 │  │  │  ├─ main.css
 │  │  │  └─ snow.css
-│  │  └─ js
-│  │     ├─ main.js
-│  │     └─ snow.js
+│  │  ├─ js
+│  │  │  ├─ main.js
+│  │  │  └─ snow.js
+│  │  └─ md
+│  │     └─ faq.md
 │  ├─ lecture
 │  │  ├─ css
 │  │  │  └─ modal.css
