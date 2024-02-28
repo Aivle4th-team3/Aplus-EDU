@@ -236,8 +236,11 @@ Aplus-EDU
 │  │  ├─ img
 │  │  │  ├─ babyRobot.png
 │  │  │  └─ Rei.jpg
-│  │  └─ js
-│  │     └─ read-image.js
+│  │  ├─ js
+│  │  │  └─ read-image.js
+│  │  └─ md
+│  │     ├─ personal_agreement.md
+│  │     └─ terms_of_use.md
 │  ├─ board
 │  │  └─ css
 │  │     ├─ post_detail.css
