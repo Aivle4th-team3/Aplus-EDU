@@ -187,7 +187,7 @@ Aplus-EDU
 │  └─ __init__.py
 ├─ core
 │  └─ templatetags
-│  │  ├─ markdown_tags.py
+│     ├─ markdown_tags.py
 │     └─ svg_tags.py
 ├─ dist
 │  └─ student_ai-0.3.8-py3-none-any.whl
@@ -252,7 +252,8 @@ Aplus-EDU
 │  │  │  ├─ loading.css
 │  │  │  └─ record-voice.css
 │  │  ├─ img
-│  │  │  └─ gpt_logo.svg
+│  │  │  ├─ gpt_logo.svg
+│  │  │  └─ loading.svg
 │  │  └─ js
 │  │     ├─ chat.js
 │  │     ├─ loading.js
