@@ -263,12 +263,17 @@ Aplus-EDU
 │  │  │  └─ system.png
 │  │  └─ lifeQuotes.txt
 │  ├─ evaluation
-│  │  └─ img
-│  │     ├─ A.png
-│  │     ├─ B.png
-│  │     ├─ C.png
-│  │     ├─ D.png
-│  │     └─ F.png
+│  │  ├─ img
+│  │  │  ├─ A.png
+│  │  │  ├─ B.png
+│  │  │  ├─ C.png
+│  │  │  ├─ D.png
+│  │  │  └─ F.png
+│  │  └─ js
+│  │     ├─ eachEvalsChartBuilder.js
+│  │     ├─ historyChartBuilder.js
+│  │     ├─ personalChartBuilder.js
+│  │     └─ todayEvalsChartBuilder.js
 │  ├─ frontdoor
 │  │  ├─ css
 │  │  │  ├─ avatar.css
@@ -353,8 +358,8 @@ Aplus-EDU
 │  │  ├─ loading.html
 │  │  └─ page.html
 │  ├─ evaluation
-│  │  ├─ my.html
-│  │  └─ page.html
+│  │  ├─ page.html
+│  │  └─ personal.html
 │  ├─ frontdoor
 │  │  ├─ base.html
 │  │  ├─ happynewyear.html
@@ -427,3 +432,4 @@ HUGGINGFACEHUB_EMBEDDING_MODEL= # jhgan/ko-sroberta-nli | https://huggingface.co
    `python manage.py runserver`
 5. 관리자 계정 생성  
    `python manage.py createsuperuser`
+

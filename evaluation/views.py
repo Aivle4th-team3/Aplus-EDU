@@ -17,7 +17,6 @@ async def __threading(tablename, statements):
     # chatbot을 사용한 평가함수 호출
     eval_test = chatbot.eval(test)
 
-    print(statements, tablename)
     # 동기 함수를 비동기 함수로 변경
     threads = [asyncio.to_thread(eval_test, statement.question, statement.answer) for statement in statements]
 
@@ -98,4 +97,4 @@ def my_evaluation(request):
     context = {
         'grouped_scores': grouped_scores,
     }
-    return render(request, "./evaluation/my.html", context=context)
+    return render(request, "./evaluation/personal.html", context=context)
