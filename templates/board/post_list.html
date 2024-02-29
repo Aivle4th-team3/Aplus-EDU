@@ -112,41 +112,26 @@
                 </div>
             </div>
         </div>
+        <script src="{% static '/board/js/postsInjection.js' %}"></script>
+        <script>
+            var post_list = [
+                {% for post in post_list %}
+                {
+                    id: '{{ post.id }}',
+                    title: '{{ post.title }}',
+                    author: '{{ post.author }}',
+                    created: '{{ post.created }}',
+                    avatar_url: '{{ post.author.avatar.url }}',
+                    comments_count: '{{ post.comments.count }}',
+                    category: '{{ post.category }}',
+                },
+                {% endfor %}
+            ];
+
+            postsInjection(post_list);
+        </script>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
 
-        var post_list = [
-            {% for post in post_list %}
-            {
-                id: '{{ post.id }}',
-                title: '{{ post.title }}',
-                author: '{{ post.author }}',
-                created: '{{ post.created }}',
-                avatar_url: '{{ post.author.avatar.url }}',
-                comments_count: '{{ post.comments.count }}',
-                category: '{{ post.category }}',
-            },
-            {% endfor %}
-        ]
-
-        new Vue({
-            delimiters: ["[[", "]]"],
-            el: "#board",
-            data: {
-                searchQuery: '',
-            },
-            computed: {
-                posts() {
-                    return post_list.filter(post => {
-                        return post.title.toLowerCase().includes(this.searchQuery)
-                            || post.author.toLowerCase().includes(this.searchQuery);
-                    });
-                }
-            }
-        });
-    });
-</script>
 
 {% endblock %}

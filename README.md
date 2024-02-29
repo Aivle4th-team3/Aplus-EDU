@@ -232,20 +232,24 @@ Aplus-EDU
 ├─ static
 │  ├─ accounts
 │  │  ├─ css
+│  │  │  ├─ consent.css
 │  │  │  ├─ signup.css
 │  │  │  └─ social-btn.css
 │  │  ├─ img
 │  │  │  ├─ babyRobot.png
 │  │  │  └─ Rei.jpg
 │  │  ├─ js
+│  │  │  ├─ enableAgree.js
 │  │  │  └─ read-image.js
 │  │  └─ md
 │  │     ├─ personal_agreement.md
 │  │     └─ terms_of_use.md
 │  ├─ board
-│  │  └─ css
-│  │     ├─ post_detail.css
-│  │     └─ post_form.css
+│  │  ├─ css
+│  │  │  ├─ post_detail.css
+│  │  │  └─ post_form.css
+│  │  └─ js
+│  │     └─ postsInjection.js
 │  ├─ chat
 │  │  ├─ css
 │  │  │  ├─ app-chat.css
@@ -310,11 +314,14 @@ Aplus-EDU
 │  │     └─ happynewyear.js
 │  ├─ home
 │  │  ├─ css
+│  │  │  ├─ faq.css
 │  │  │  ├─ home.css
 │  │  │  ├─ main.css
 │  │  │  └─ snow.css
 │  │  ├─ js
 │  │  │  ├─ main.js
+│  │  │  ├─ readComment.js
+│  │  │  ├─ slidePhrase.js
 │  │  │  └─ snow.js
 │  │  └─ md
 │  │     └─ faq.md
@@ -324,7 +331,8 @@ Aplus-EDU
 │  │  ├─ img
 │  │  │  └─ converse_with_ai.png
 │  │  └─ js
-│  │     └─ modal.js
+│  │     ├─ modal.js
+│  │     └─ videoInjection.js
 │  └─ vendor
 │     ├─ css
 │     │  ├─ bootstrap.css
@@ -364,6 +372,7 @@ Aplus-EDU
 │  │  ├─ base.html
 │  │  ├─ happynewyear.html
 │  │  ├─ index.html
+│  │  ├─ introduction.html
 │  │  └─ topbar.html
 │  ├─ home
 │  │  ├─ base.html

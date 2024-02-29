@@ -5,39 +5,8 @@
 {% block contents %}
   <link href="{% static '/vendor/css/sb-admin-2.min.css' %}" rel="stylesheet" />
   <link href="{% static '/vendor/css/bootstrap.css' %}" rel="stylesheet" />
+  <link href="{% static '/home/css/faq.css' %}" rel="stylesheet" />
 
-  <style>
-    .faq-container {
-      width: 80%;
-      margin: 40px auto;
-      max-width: 9000px;
-      text-align: center;
-    }
-    .faq-items li {
-      list-style-type: none;
-      background: #f9f9f9;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    .faq-items h3 {
-      margin: 0;
-      padding: 0;
-      cursor: pointer;
-    }
-    .faq-items p {
-      display: none;
-      padding: 15px;
-      border-top: 1px solid #ddd;
-    }
-    .faq-container h1 {
-      margin-bottom: 100px;
-      background-color: #6c757d;
-      padding: 20px;
-      font-size: 42px;
-      color: white;
-    }
-  </style>
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-xl-10 col-lg-12 col-md-9">
@@ -54,17 +23,5 @@
       </div>
     </div>
   </div>
-  <script>
-    // Simple JavaScript to toggle the display of the FAQ answer
-    document.addEventListener('DOMContentLoaded', function () {
-      var faqs = document.querySelectorAll('.faq-items h3')
-      for (var i = 0; i < faqs.length; i++) {
-        faqs[i].addEventListener('click', function () {
-          var answer = this.nextElementSibling
-          answer.style.display = answer.style.display === 'block' ? 'none' : 'block'
-        })
-      }
-    })
-  </script>
   <script src="{% static 'frontdoor/js/frontdoor.js' %}"></script>
 {% endblock %}
