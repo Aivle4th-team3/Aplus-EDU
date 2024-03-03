@@ -22,12 +22,8 @@
               {% endif %}
               <div class="form-group">
                 <!-- User-specific fields -->
-                <div class="avatar-form">
-                  <label for="uploadAvatar">
-                    <input type="file" id="uploadAvatar" class="account-file-input" hidden="" accept="image/png, image/jpeg" name="avatar" />
-                    <img id="uploadedAvatar" src="{% static 'frontdoor/img/blank profile.png' %}" title="이미지" />
-                  </label>
-                </div>
+                {% static 'frontdoor/img/blank profile.png' as default_src %}
+                {% include 'account/avatar.html' with src=default_src %}
                 <div class="basic-forms">{{ form.as_table }}</div>
                 <!-- Other form fields can be added if needed -->
               </div>

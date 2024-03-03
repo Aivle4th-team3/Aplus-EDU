@@ -20,13 +20,7 @@
             <!-- Account -->
             <div class="card-body">
               <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <div class="avatar-form">
-                  <label for="uploadAvatar">
-                    <input type="file" id="uploadAvatar" class="account-file-input" hidden="" accept="image/png, image/jpeg" name="avatar" />
-                    <img id="uploadedAvatar" class="d-block rounded" height="150" width="150" src="{{ user.avatar.url }}" title="이미지" />
-                  </label>
-                </div>
-                <script src="{% static '/accounts/js/read-image.js' %}"></script>
+                {% include 'account/avatar.html' with src=user.avatar.url %}
               </div>
             </div>
 

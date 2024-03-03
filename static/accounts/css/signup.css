@@ -66,26 +66,6 @@
     display: none;
     border-radius: 10px 0 10px 0;
 }
-.avatar-form {
-    display: flex;
-    width: 40%;
-    height: 225px;
-    border-radius: 10px 0 0 10px;
-    border: 1px solid #ccc;
-    justify-content: center;
-    align-items: center;
-}
-.avatar-form label {
-    cursor: pointer;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-}
-.avatar-form img {
-    border-radius: 10px 0 0 10px;
-    width: 100%;
-    height: 100%;
-}
 
 .helptext {
     display: none;

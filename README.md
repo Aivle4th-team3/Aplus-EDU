@@ -233,6 +233,7 @@ Aplus-EDU
 ├─ static
 │  ├─ accounts
 │  │  ├─ css
+│  │  │  ├─ avatar.css
 │  │  │  ├─ consent.css
 │  │  │  ├─ signup.css
 │  │  │  └─ social-btn.css
@@ -354,6 +355,7 @@ Aplus-EDU
 │        └─ theme-default.css
 ├─ templates
 │  ├─ account
+│  │  ├─ avatar.html
 │  │  ├─ consent.html
 │  │  ├─ login.html
 │  │  ├─ mypage.html

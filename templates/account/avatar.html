@@ -1,0 +1,10 @@
+{% load static %}
+
+<div class="avatar-form cursor-pointer">
+  <label for="uploadAvatar">
+    <input type="file" id="uploadAvatar" class="account-file-input" hidden="" accept="image/png, image/jpeg" name="avatar" />
+    <img id="uploadedAvatar" height="150" width="150" src="{{ src }}" title="이미지" />
+  </label>
+</div>
+<link href="{% static '/accounts/css/avatar.css' %}" rel="stylesheet" />
+<script src="{% static '/accounts/js/read-image.js' %}"></script>
