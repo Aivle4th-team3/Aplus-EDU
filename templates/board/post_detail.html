@@ -10,64 +10,65 @@
         <a href="{% current_url 'board' %}">게시글</a>
     </h4>
 
-    <div style="background:white; padding:30px;">
-        <div>
+    <div class="bg-white p-5">
+        <div class="container-xl container-p-y">
             <h1>{{ post.title }}</h1>
-            <div class="avatar" style="display: flex; align-items: center;">
+            <div class="author">
                 <img class="w-px-40 rounded-circle" src="{{ post.author.avatar.url }}"/>
-                <div style="display: flex; flex-direction: column; margin-left: 10px; font-size: 14px">
+                <div class="created small">
                     <span>{{ post.author }}</span>
-                    <span style="padding: 3px 0; opacity: .8">{{ post.created }}</span>
+                    <span>{{ post.created }}</span>
                 </div>
             </div>
-        </div>
-        <hr/><br/>
-        <div>
-            <br />
+            <hr/><br/><br />
             {{ post.body|safe }}
             <br />
             {% if request.user == post.author %}
-                <div>
-                <a class="board-button" href="{% current_url 'update' post.id %}">글 수정하기</a>
-                <a class="board-button" href="{% current_url 'delete' post.id %}">글 삭제</a>
+            <div class="board-buttons">
+                <button class="btn btn-primary" onclick="location.href='{% current_url 'update' post.id %}'">수정</button>
+                <button class="btn btn-primary" onclick="openDeleteWindow('{% current_url 'delete' post.id %}')">삭제</button>
+            </div>
             {% endif %}
-            
+        </div>
 
-            <hr />
-            <p>댓글</p>
+        <hr />
+        <div>
+            <p>댓글 {{ comment_all|length }}개</p>
             <!-- 댓글 템플릿 -->
             {% for comment in comment_all %}
             <div class="comment-container">
-                <span class="comment-author">{{ comment.author }}</span>
-                <span class="comment-created">{{ comment.created }}</span>
-                <p class="comment-message">{{ comment.message }}</p>
+                <div>
+                    <span class="comment-author">{{ comment.author }}</span>
+                    <span class="comment-created">{{ comment.created }}</span>
+                    <p class="comment-message">{{ comment.message }}</p>
+                </div>
                 {% if request.user == comment.author %}
                     <button class="close" title="댓글 삭제" onclick="openDeleteWindow('{% current_url 'delete_comment' post.id comment.id %}')"></button>
                 {% endif %}
             </div>
-            {%empty%}
-            <p>댓글이 존재하지 않습니다.</p>
             {% endfor %}
-            <hr />
 
             <form class="comment-form" action="{% current_url 'create_comment' post.id %}" method="POST">
                 {% csrf_token %}
-                <label for="{{ comment_form.message.id_for_label }}">댓글 입력</label>
-                <textarea
-                    name="{{ comment_form.message.name }}"
-                    id="{{ comment_form.message.id_for_label }}"
-                    placeholder="여러분들의 소중한 댓글을 입력해주세요."
-                    cols="{{ comment_form.message.widget.attrs.cols }}"
-                    rows="{{ comment_form.message.widget.attrs.rows }}"
-                    {% if comment_form.message.disabled %}disabled{% endif %}
-                    {% if comment_form.message.required %}required{% endif %}
-                >{{ comment_form.message.value|default:'' }}</textarea>
-                <input type="hidden" name="post" value="{{ post.id }}">
-                <input type="hidden" name="author" value="{{ request.user.id }}">
-                <button type="submit" class="btn btn-primary">제출</button>
+                {% with message=comment_form.message %}
+                    <textarea
+                        name="{{ message.name }}"
+                        id="{{ message.id_for_label }}"
+                        placeholder="여러분들의 소중한 댓글을 입력해주세요."
+                        cols="{{ message.widget.attrs.cols }}"
+                        rows="{{ message.widget.attrs.rows }}"
+                        {% if message.disabled %}disabled{% endif %}
+                        {% if message.required %}required{% endif %}
+                    >{{ message.value|default:'' }}</textarea>
+                    <input type="hidden" name="post" value="{{ post.id }}">
+                    <input type="hidden" name="author" value="{{ request.user.id }}">
+                    <button type="submit" class="btn btn-primary">제출</button>
+                {% endwith %}
             </form>
+        </div>
 
-            <hr />
+        <hr />
+        <div>
             <a href="{% current_url 'board' %}">목록가기</a>
         </div>
         <script>

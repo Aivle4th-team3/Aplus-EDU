@@ -1,9 +1,8 @@
 {% load static %}
-
 <form>
   {% csrf_token %}
-  <p>정말 삭제하시겠습니까?</p>
-  <input type="submit" value="Confirm" />
+  <p class="container-xl container-p-y">정말 삭제하시겠습니까?</p>
+  <input type="submit" value="확인" style="width:100%"/>
 
   <script src="{% static '/board/js/popupDelete.js' %}"></script>
   <script>
