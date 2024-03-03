@@ -1,0 +1,16 @@
+.gender-chart {
+    height: 200px;
+    width: 100%;
+    magin: 20px 0;
+}
+
+.detail_eval .describe > div {
+    display: flex;
+    padding: 10px;
+}
+.detail_eval .label {
+    min-width: 90px; opacity: .7;
+}
+.score {
+    display: flex; padding: 10px; min-width: 50px; align-items: center
+}

@@ -74,30 +74,30 @@
           </div>
           <div class="card-body">
             <div class="chart-wrapper">
-              <div class="gender-chart" style="height: 200px; width: 100%; magin:20px 0">
+              <div class="gender-chart">
                 <canvas id="todayEvalsBar"></canvas>
               </div>
             </div>
             <div class="chart-wrapper">
-              <div class="gender-chart" style="height: 300px; width: 100%; magin:20px 0">
+              <div class="gender-chart">
                 <canvas id="eachEvalsBar"></canvas>
               </div>
             </div>
 
             <ul class="table-border-bottom-0">
               {% for detail_eval in detail_evals %}
-                <li class="d-flex justify-content-between" style="padding: 20px">
-                  <div>
-                    <div class="ps-0" style="display: flex; padding: 10px;">
-                      <span style="min-width: 90px; opacity: .7;"><i class="bx bx-message-square-dots"></i>학생 대답:</span>
+                <li class="d-flex justify-content-between detail_eval" style="padding: 20px">
+                  <div class="describe">
+                    <div class="ps-0">
+                      <span class="label"><i class="bx bx-message-square-dots"></i>학생 대답:</span>
                       <span class="mb-0 fw-normal">{{ detail_eval.student_saying }}</span>
                     </div>
-                    <div class="ps-0" style="display: flex; padding: 10px;">
-                      <span style="min-width: 90px; opacity: .7;"><i class="bx bx-down-arrow-circle"></i>평가:</span>
+                    <div class="ps-0">
+                      <span class="label"><i class="bx bx-down-arrow-circle"></i>평가:</span>
                       <span class="mb-0 fw-normal">{{ detail_eval.explation }}</span>
                     </div>
                   </div>
-                  <div class="text-end pe-0" style="display: flex; padding: 10px; min-width: 50px; align-items: center">
+                  <div class="text-end pe-0 score">
                     <span class="fw-medium">{{ detail_eval.score }}점</span>
                   </div>
                 </li>
@@ -113,6 +113,7 @@
     <script src="{% static '/evaluation/js/todayEvalsChartBuilder.js' %}"></script>
     <script src="{% static '/evaluation/js/eachEvalsChartBuilder.js' %}"></script>
     <script src="{% static '/evaluation/js/historyChartBuilder.js' %}"></script>
+    <link href="{% static '/evaluation/css/page.css' %}" rel="stylesheet" />
     <script>
         const canvas = id => document.getElementById(id).getContext("2d");
 
