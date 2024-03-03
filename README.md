@@ -187,6 +187,7 @@ Aplus-EDU
 │  └─ __init__.py
 ├─ core
 │  └─ templatetags
+│     ├─ form_tags.py
 │     ├─ markdown_tags.py
 │     └─ svg_tags.py
 ├─ dist

@@ -2,7 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django_countries import countries
 from allauth.account.views import SignupView
 from .models import User, UserMessage
 from .forms import UserForm, CustomSignupForm
@@ -33,8 +32,10 @@ def mypage(request):
         # 유효성 검사 후 저장
         if user_form.is_valid():
             user_form.save()
+    else:
+        user_form = UserForm(instance=model)
 
-    context = {'user': model, 'countries': countries}
+    context = {'user': model, 'form': user_form}
     return render(request, './account/mypage.html', context=context)
 
 
