@@ -249,6 +249,7 @@ Aplus-EDU
 │  │  │  ├─ post_detail.css
 │  │  │  └─ post_form.css
 │  │  └─ js
+│  │     ├─ popupDelete.js
 │  │     └─ postsInjection.js
 │  ├─ chat
 │  │  ├─ css

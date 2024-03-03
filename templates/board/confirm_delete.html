@@ -1,5 +1,12 @@
-<form method="post">
-    {% csrf_token %}
-    <p>정말 삭제하시겠습니까?</p>
-    <input type="submit" value="Confirm">
+{% load static %}
+
+<form>
+  {% csrf_token %}
+  <p>정말 삭제하시겠습니까?</p>
+  <input type="submit" value="Confirm" />
+
+  <script src="{% static '/board/js/popupDelete.js' %}"></script>
+  <script>
+    popupDelete(document.currentScript.closest('form'), '{{ view.get_success_url }}')
+  </script>
 </form>

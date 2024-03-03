@@ -42,7 +42,7 @@
                 <span class="comment-created">{{ comment.created }}</span>
                 <p class="comment-message">{{ comment.message }}</p>
                 {% if request.user == comment.author %}
-                    <a href="{% current_url 'delete_comment' post.id comment.id %}">댓글 삭제</a>
+                    <button class="close" title="댓글 삭제" onclick="openDeleteWindow('{% current_url 'delete_comment' post.id comment.id %}')"></button>
                 {% endif %}
             </div>
             {%empty%}
@@ -70,6 +70,11 @@
             <hr />
             <a href="{% current_url 'board' %}">목록가기</a>
         </div>
+        <script>
+            function openDeleteWindow(url) {
+                window.open(url, '_blank', 'width=200, height=100');
+            }
+        </script>
     </div>
 </div>
 
