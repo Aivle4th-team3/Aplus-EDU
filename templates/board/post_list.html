@@ -5,136 +5,136 @@
 {% block contents %}
 <link href="{% static '/board/css/post_list.css' %}" rel="stylesheet" />
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="py-3 mb-4"><span class="text-muted fw-light">게시판</span></h4>
+  <h4 class="py-3 mb-4"><span class="text-muted fw-light">게시판</span></h4>
 
-    <div class="board">
-        <!-- Category List Table -->
-        <div class="card">
-            <div class="card-datatable table-responsive">
-                <div id="board" class="dt-bootstrap5 no-footer">
-                    <div class="card-header d-flex flex-wrap py-0 justify-content-sm-between">
-                        <div class="me-5 ms-n2 pe-5">
-                            <form method="get">
-                                <label><input name="q" type="search" class="form-control" placeholder="{{ q|default:'Search' }}" v-model="searchQuery"/></label>
-                            </form>
-                        </div>
-                        <div class="d-flex justify-content-start justify-content-md-end align-items-baseline">
-                            <div class="dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0 gap-3 pt-0">
-                                <div class="mt-0" >
-                                    <label>
-                                        <form method="get">
-                                            <select name="page_size" class="form-select" onchange="this.form.submit();">
-                                                {% for i in page_size_list %}
-                                                    <option value="{{i}}" {% if i == page_size %}selected{% endif %}>{{i}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </form>
-                                    </label>
-                                </div>
-                                {% if not namespace == 'notice' or user.is_superuser %}
-                                    <div class="dt-buttons">
-                                        <button class="dt-button add-new btn btn-primary ms-2">
-                                            <a href="{% current_url 'create' %}"><i class="bx bx-plus me-0 me-sm-1"></i>
-                                                새 글 쓰기
-                                            </a>
-                                        </button>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table border-top dataTable no-footer dtr-column collapsed">
-                        <thead>
-                            <tr>
-                                <th class="control sorting_disabled title"></th>
-                                <th>제목</th>
-                                <th class="text-nowrap text-sm-end sorting_disabled created">작성 시간</th>
-                                <th class="text-nowrap text-sm-end sorting author">작성자</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Client Side Rendering -->
-                            <tr class="odd" v-for="post in posts">
-                                <td class="control" tabindex="0"></td>
-                                <td class="sorting_1">
-                                    <div class="d-flex align-items-center">
-                                        <a class="d-flex flex-column justify-content-center" :href="'{% current_url 'board' %}'+post.id">
-                                            <div>
-                                                {% if namespace == 'forum' %}
-                                                    <span v-if="post.category=='Notice'">[공지]</span>
-                                                    <span v-if="post.category=='QnA'">[질문]</span>
-                                                    <span v-if="post.category=='Community'">[자유]</span>
-                                                {% endif %}
-                                                <span class="text-body text-wrap fw-medium" :class="{'notice': post.category=='Notice'}">[[ post.title ]]</span>
-                                                <span class="comments-count">[[ post.comments_count ]]</span>
-                                            </div>
-                                            <span class="text-muted text-truncate mb-0 d-none d-sm-block"><small>Tag</small></span>
-                                        </a>
-                                    </div>
-                                </td>
-                                <td><div class="text-sm-end created">[[ post.created ]]</div></td>
-                                <td>
-                                    <div class="fw-medium text-sm-end flex-row-reverse d-sm-flex align-items-sm-center">
-                                        <div class="avatar"><img :src="post.avatar_url"/></div>
-                                        <div class="author">[[ post.author ]]</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <br/>
-                    <div class="row mx-2">
-                        <div class="col-sm-12 col-md-6"><div role="status"></div></div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="paging_simple_numbers">
-                                <ul class="pagination">
-                                    {% if page_obj.has_previous %}
-                                        <li class="paginate_button page-item previous">
-                                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&page_size={{ page_size }}" class="page-link">
-                                                <i class="tf-icon bx bx-chevron-left"></i>
-                                            </a>
-                                        </li>
-                                    {% endif %}
-
-                                    {% for i in paginator.page_range %}
-                                        <li class="paginate_button page-item {% if i == page_obj.number %}active{% endif %}">
-                                            <a href="{{ request.path }}?page={{ i }}&page_size={{ page_size }}" class="page-link">{{ i }}</a>
-                                        </li>
-                                    {% endfor %}
-
-                                    {% if page_obj.has_next %}
-                                        <li class="paginate_button page-item next {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}" >
-                                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}&page_size={{ page_size }}" class="page-link">
-                                                <i class="tf-icon bx bx-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="board">
+    <!-- Category List Table -->
+    <div class="card">
+      <div class="card-datatable table-responsive">
+        <div id="board" class="dt-bootstrap5 no-footer">
+          <div class="card-header d-flex flex-wrap py-0 justify-content-sm-between">
+            <div class="me-5 ms-n2 pe-5">
+              <form method="get">
+                <label><input name="q" type="search" class="form-control" placeholder="{{ q|default:'Search' }}" v-model="searchQuery"/></label>
+              </form>
             </div>
-        </div>
-        <script src="{% static '/board/js/postsInjection.js' %}"></script>
-        <script>
-            var post_list = [
-                {% for post in post_list %}
-                {
-                    id: '{{ post.id }}',
-                    title: '{{ post.title }}',
-                    author: '{{ post.author }}',
-                    created: '{{ post.created }}',
-                    avatar_url: '{{ post.author.avatar.url }}',
-                    comments_count: '{{ post.comments.count }}',
-                    category: '{{ post.category }}',
-                },
-                {% endfor %}
-            ];
+            <div class="d-flex justify-content-start justify-content-md-end align-items-baseline">
+              <div class="dt-action-buttons d-flex align-items-start align-items-md-center justify-content-sm-center mb-3 mb-sm-0 gap-3 pt-0">
+                <div class="mt-0" >
+                  <label>
+                    <form method="get">
+                      <select name="page_size" class="form-select" onchange="this.form.submit();">
+                        {% for i in page_size_list %}
+                          <option value="{{i}}" {% if i == page_size %}selected{% endif %}>{{i}}</option>
+                        {% endfor %}
+                      </select>
+                    </form>
+                  </label>
+                </div>
+                {% if not namespace == 'notice' or user.is_superuser %}
+                  <div class="dt-buttons">
+                    <button class="dt-button add-new btn btn-primary ms-2">
+                      <a href="{% current_url 'create' %}"><i class="bx bx-plus me-0 me-sm-1"></i>
+                        새 글 쓰기
+                      </a>
+                    </button>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <table class="table border-top dataTable no-footer dtr-column collapsed">
+            <thead>
+              <tr>
+                <th class="control sorting_disabled title"></th>
+                <th>제목</th>
+                <th class="text-nowrap text-sm-end sorting_disabled created">작성 시간</th>
+                <th class="text-nowrap text-sm-end sorting author">작성자</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Client Side Rendering -->
+              <tr class="odd" v-for="post in posts">
+                <td class="control" tabindex="0"></td>
+                <td class="sorting_1">
+                  <div class="d-flex align-items-center">
+                    <a class="d-flex flex-column justify-content-center" :href="'{% current_url 'board' %}'+post.id">
+                      <div>
+                        {% if namespace == 'forum' %}
+                          <span v-if="post.category=='Notice'">[공지]</span>
+                          <span v-if="post.category=='QnA'">[질문]</span>
+                          <span v-if="post.category=='Community'">[자유]</span>
+                        {% endif %}
+                        <span class="text-body text-wrap fw-medium" :class="{'notice': post.category=='Notice'}">[[ post.title ]]</span>
+                        <span class="comments-count">[[ post.comments_count ]]</span>
+                      </div>
+                      <span class="text-muted text-truncate mb-0 d-none d-sm-block"><small>Tag</small></span>
+                    </a>
+                  </div>
+                </td>
+                <td><div class="text-sm-end created">[[ post.created ]]</div></td>
+                <td>
+                  <div class="fw-medium text-sm-end flex-row-reverse d-sm-flex align-items-sm-center">
+                    <div class="avatar"><img :src="post.avatar_url"/></div>
+                    <div class="author">[[ post.author ]]</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br/>
+          <div class="row mx-2">
+            <div class="col-sm-12 col-md-6"><div role="status"></div></div>
+            <div class="col-sm-12 col-md-6">
+              <div class="paging_simple_numbers">
+                <ul class="pagination">
+                  {% if page_obj.has_previous %}
+                    <li class="paginate_button page-item previous">
+                      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&page_size={{ page_size }}" class="page-link">
+                        <i class="tf-icon bx bx-chevron-left"></i>
+                      </a>
+                    </li>
+                  {% endif %}
 
-            postsInjection(post_list);
-        </script>
+                  {% for i in paginator.page_range %}
+                    <li class="paginate_button page-item {% if i == page_obj.number %}active{% endif %}">
+                      <a href="{{ request.path }}?page={{ i }}&page_size={{ page_size }}" class="page-link">{{ i }}</a>
+                    </li>
+                  {% endfor %}
+
+                  {% if page_obj.has_next %}
+                    <li class="paginate_button page-item next {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}" >
+                      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}&page_size={{ page_size }}" class="page-link">
+                        <i class="tf-icon bx bx-chevron-right"></i>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <script src="{% static '/board/js/postsInjection.js' %}"></script>
+    <script>
+      var post_list = [
+        {% for post in post_list %}
+        {
+          id: '{{ post.id }}',
+          title: '{{ post.title }}',
+          author: '{{ post.author }}',
+          created: '{{ post.created }}',
+          avatar_url: '{{ post.author.avatar.url }}',
+          comments_count: '{{ post.comments.count }}',
+          category: '{{ post.category }}',
+        },
+        {% endfor %}
+      ];
+
+      postsInjection(post_list);
+    </script>
+  </div>
 </div>
 
 

@@ -4,18 +4,18 @@
 {% block contents %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 <div class="container-xxl flex-grow-1 container-p-y" style="position: relative;">
-    <h4 class="py-3 mb-4">
-        <span class="text-muted fw-light">성취도 평가 기록 / {{ user }} </span>
-    </h4>
+  <h4 class="py-3 mb-4">
+    <span class="text-muted fw-light">성취도 평가 기록 / {{ user }} </span>
+  </h4>
 
-    <!-- Card Border Shadow -->
-    <!-- / Content -->
-    <!-- Content wrapper -->
-    <script src="{% static '/evaluation/js/personalChartBuilder.js' %}"></script>
-    <script>
-        const canvas = id => document.getElementById(id).getContext("2d");
+  <!-- Card Border Shadow -->
+  <!-- / Content -->
+  <!-- Content wrapper -->
+  <script src="{% static '/evaluation/js/personalChartBuilder.js' %}"></script>
+  <script>
+    const canvas = id => document.getElementById(id).getContext("2d");
 
-        personalChartBuilder(canvas("historyChart"), {{ grouped_scores|safe }});
-    </script>
-    {% endblock %}
+    personalChartBuilder(canvas("historyChart"), {{ grouped_scores|safe }});
+  </script>
+  {% endblock %}
 </div>

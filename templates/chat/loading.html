@@ -4,11 +4,11 @@
 
 <link href="{% static '/chat/css/loading.css' %}" rel="stylesheet" />
 <div id="loader">
-    <div class="face">
-        <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-        {% load_svg 'chat/img/loading.svg' as svg_content %}
-        {{ svg_content|safe }}
-    </div>
-    <div class="loading-bar"></div>
+  <div class="face">
+    <?xml version="1.0" encoding="utf-8" standalone="yes"?>
+    {% load_svg 'chat/img/loading.svg' as svg_content %}
+    {{ svg_content|safe }}
+  </div>
+  <div class="loading-bar"></div>
 </div>
 {% endblock %}

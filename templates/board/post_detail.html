@@ -6,77 +6,77 @@
 <link href="{% static '/board/css/post_detail.css' %}" rel="stylesheet" />
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="py-3 mb-4">
-        <a href="{% current_url 'board' %}">게시글</a>
-    </h4>
+  <h4 class="py-3 mb-4">
+    <a href="{% current_url 'board' %}">게시글</a>
+  </h4>
 
-    <div class="bg-white p-5">
-        <div class="container-xl container-p-y">
-            <h1>{{ post.title }}</h1>
-            <div class="author">
-                <img class="w-px-40 rounded-circle" src="{{ post.author.avatar.url }}"/>
-                <div class="created small">
-                    <span>{{ post.author }}</span>
-                    <span>{{ post.created }}</span>
-                </div>
-            </div>
-            <hr/><br/><br />
-            {{ post.body|safe }}
-            <br />
-            {% if request.user == post.author %}
-            <div class="board-buttons">
-                <button class="btn btn-primary" onclick="location.href='{% current_url 'update' post.id %}'">수정</button>
-                <button class="btn btn-primary" onclick="openDeleteWindow('{% current_url 'delete' post.id %}')">삭제</button>
-            </div>
-            {% endif %}
+  <div class="bg-white p-5">
+    <div class="container-xl container-p-y">
+      <h1>{{ post.title }}</h1>
+      <div class="author">
+        <img class="w-px-40 rounded-circle" src="{{ post.author.avatar.url }}"/>
+        <div class="created small">
+          <span>{{ post.author }}</span>
+          <span>{{ post.created }}</span>
         </div>
-
-        <hr />
-        <div>
-            <p>댓글 {{ comment_all|length }}개</p>
-            <!-- 댓글 템플릿 -->
-            {% for comment in comment_all %}
-            <div class="comment-container">
-                <div>
-                    <span class="comment-author fw-bold">{{ comment.author }}</span>
-                    <span class="comment-created">{{ comment.created }}</span>
-                    <p class="comment-message">{{ comment.message }}</p>
-                </div>
-                {% if request.user == comment.author %}
-                    <button class="close" title="댓글 삭제" onclick="openDeleteWindow('{% current_url 'delete_comment' post.id comment.id %}')"></button>
-                {% endif %}
-            </div>
-            {% endfor %}
-
-            <form class="comment-form" action="{% current_url 'create_comment' post.id %}" method="POST">
-                {% csrf_token %}
-                {% with message=comment_form.message %}
-                    <textarea
-                        name="{{ message.name }}"
-                        id="{{ message.id_for_label }}"
-                        placeholder="여러분들의 소중한 댓글을 입력해주세요."
-                        cols="{{ message.widget.attrs.cols }}"
-                        rows="{{ message.widget.attrs.rows }}"
-                        {% if message.disabled %}disabled{% endif %}
-                        {% if message.required %}required{% endif %}
-                    >{{ message.value|default:'' }}</textarea>
-                    <input type="hidden" name="post" value="{{ post.id }}">
-                    <input type="hidden" name="author" value="{{ request.user.id }}">
-                    <button type="submit" class="btn btn-primary">제출</button>
-                {% endwith %}
-            </form>
-        </div>
-
-        <hr />
-        <div>
-            <a href="{% current_url 'board' %}">목록가기</a>
-        </div>
-        <script>
-            function openDeleteWindow(url) {
-                window.open(url, '_blank', 'width=200, height=100');
-            }
-        </script>
+      </div>
+      <hr/><br/><br />
+      {{ post.body|safe }}
+      <br />
+      {% if request.user == post.author %}
+      <div class="board-buttons">
+        <button class="btn btn-primary" onclick="location.href='{% current_url 'update' post.id %}'">수정</button>
+        <button class="btn btn-primary" onclick="openDeleteWindow('{% current_url 'delete' post.id %}')">삭제</button>
+      </div>
+      {% endif %}
     </div>
+
+    <hr />
+    <div>
+      <p>댓글 {{ comment_all|length }}개</p>
+      <!-- 댓글 템플릿 -->
+      {% for comment in comment_all %}
+      <div class="comment-container">
+        <div>
+          <span class="comment-author fw-bold">{{ comment.author }}</span>
+          <span class="comment-created">{{ comment.created }}</span>
+          <p class="comment-message">{{ comment.message }}</p>
+        </div>
+        {% if request.user == comment.author %}
+          <button class="close" title="댓글 삭제" onclick="openDeleteWindow('{% current_url 'delete_comment' post.id comment.id %}')"></button>
+        {% endif %}
+      </div>
+      {% endfor %}
+
+      <form class="comment-form" action="{% current_url 'create_comment' post.id %}" method="POST">
+        {% csrf_token %}
+        {% with message=comment_form.message %}
+          <textarea
+            name="{{ message.name }}"
+            id="{{ message.id_for_label }}"
+            placeholder="여러분들의 소중한 댓글을 입력해주세요."
+            cols="{{ message.widget.attrs.cols }}"
+            rows="{{ message.widget.attrs.rows }}"
+            {% if message.disabled %}disabled{% endif %}
+            {% if message.required %}required{% endif %}
+          >{{ message.value|default:'' }}</textarea>
+          <input type="hidden" name="post" value="{{ post.id }}">
+          <input type="hidden" name="author" value="{{ request.user.id }}">
+          <button type="submit" class="btn btn-primary">제출</button>
+        {% endwith %}
+      </form>
+    </div>
+
+    <hr />
+    <div>
+      <a href="{% current_url 'board' %}">목록가기</a>
+    </div>
+    <script>
+      function openDeleteWindow(url) {
+        window.open(url, '_blank', 'width=200, height=100');
+      }
+    </script>
+  </div>
 </div>
 
 <!-- / Content -->
