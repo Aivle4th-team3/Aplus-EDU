@@ -1,0 +1,164 @@
+{% load static %}
+{% block calendar %}
+  <link rel="stylesheet" href="{% static '/vendor/sneat-bootstrap/app-calendar.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="{% static '/vendor/sneat-bootstrap/app-calendar.js' %}"></script>
+  <script src="{% static '/vendor/sneat-bootstrap/app-calendar-events.js' %}"></script>
+
+  <div class="row g-0">
+    <!-- Calendar Sidebar -->
+    <div class="col app-calendar-sidebar" id="app-calendar-sidebar">
+      <div class="border-bottom p-4 my-sm-0 mb-3">
+        <div class="d-grid">
+          <button class="btn btn-primary btn-toggle-sidebar" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
+            <i class="bx bx-plus me-1"></i>
+            <span class="align-middle">일정 추가</span>
+          </button>
+        </div>
+      </div>
+      <div class="p-4">
+        <!-- inline calendar (flatpicker) -->
+        <div class="ms-n2">
+          <div class="inline-calendar flatpickr-input" readonly="readonly"></div>
+          <div class="flatpickr-calendar animate inline" tabindex="-1">
+            <div class="flatpickr-months"></div>
+            <div class="flatpickr-innerContainer">
+              <div class="flatpickr-rContainer">
+                <div class="flatpickr-weekdays"></div>
+                <div class="flatpickr-days" tabindex="-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="container-m-nx my-4" />
+        <!-- Filter -->
+        <div class="mb-4">
+          <small class="text-small text-muted text-uppercase align-middle">Filter</small>
+        </div>
+
+        <div class="form-check mb-2">
+          <input class="form-check-input select-all" type="checkbox" id="selectAll" data-value="all" checked="checked" />
+          <label class="form-check-label" for="selectAll">모두 보기</label>
+        </div>
+
+        <div class="app-calendar-events-filter">
+          <div class="form-check form-check-danger mb-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="checked" />
+            <label class="form-check-label" for="select-personal">개인</label>
+          </div>
+          <div class="form-check mb-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-business" data-value="business" checked="checked" />
+            <label class="form-check-label" for="select-business">비즈니스</label>
+          </div>
+          <div class="form-check form-check-warning mb-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-family" data-value="family" checked="checked" />
+            <label class="form-check-label" for="select-family">가족</label>
+          </div>
+          <div class="form-check form-check-success mb-2">
+            <input class="form-check-input input-filter" type="checkbox" id="select-holiday" data-value="holiday" checked="checked" />
+            <label class="form-check-label" for="select-holiday">휴일</label>
+          </div>
+          <div class="form-check form-check-info">
+            <input class="form-check-input input-filter" type="checkbox" id="select-etc" data-value="etc" checked="checked" />
+            <label class="form-check-label" for="select-etc">기타</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Calendar Sidebar -->
+
+    <!-- Calendar & Modal -->
+    <div class="col app-calendar-content">
+      <div class="card shadow-none border-0">
+        <div class="card-body pb-0">
+          <!-- FullCalendar -->
+        </div>
+      </div>
+      <div class="app-overlay"></div>
+      <!-- FullCalendar Offcanvas -->
+      <div id="calendar" class="card app-calendar-wrapper"></div>
+      <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" aria-labelledby="addEventSidebarLabel">
+        <div class="offcanvas-header border-bottom">
+          <h5 class="offcanvas-title mb-2" id="addEventSidebarLabel">Add Event</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body">
+          <form action="" method="POST" class="event-form pt-0 fv-plugins-bootstrap5 fv-plugins-framework" id="eventForm" novalidate="novalidate">
+            {% csrf_token %}
+            <div class="mb-3 fv-plugins-icon-container">
+              <label class="form-label" for="eventTitle">Title</label>
+              <input type="text" class="form-control" id="eventTitle" name="eventTitle" placeholder="Event Title" />
+              <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="eventLabel">Label</label>
+              <div class="position-relative">
+                <select class="select2 select-event-label form-select select2-hidden-accessible" id="eventLabel" name="eventLabel" data-select2-id="eventLabel" tabindex="-1" aria-hidden="true">
+                  <option data-label="primary" value="강의" selected="selected" data-select2-id="2">강의</option>
+                  <option data-label="success" value="복습">복습</option>
+                  <option data-label="danger" value="휴가">휴가</option>
+                  <option data-label="success" value="Holiday">휴일</option>
+                  <option data-label="info" value="ETC">기타</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3 fv-plugins-icon-container">
+              <label class="form-label" for="eventStartDate">시작 날짜</label>
+              <input type="text" class="form-control flatpickr-input" id="eventStartDate" name="eventStartDate" placeholder="Start Date" readonly="readonly" />
+              <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+            </div>
+            <div class="mb-3 fv-plugins-icon-container">
+              <label class="form-label" for="eventEndDate">종료 날짜</label>
+              <input type="text" class="form-control flatpickr-input" id="eventEndDate" name="eventEndDate" placeholder="End Date" readonly="readonly" />
+              <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+            </div>
+            <div class="mb-3 select2-primary">
+              <div class="position-relative">
+                <select class="select2 select-event-guests form-select select2-hidden-accessible" id="eventGuests" name="eventGuests" multiple="multiple" data-select2-id="eventGuests" tabindex="-1" aria-hidden="true"></select>
+              </div>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
+              <div>
+                <button type="submit" class="btn btn-primary btn-add-event me-sm-3 me-1">추가하기</button>
+                <button type="reset" class="btn btn-label-secondary btn-cancel me-sm-0 me-1" data-bs-dismiss="offcanvas">취소</button>
+              </div>
+              <div>
+                <button class="btn btn-label-danger btn-delete-event d-none">Delete</button>
+              </div>
+            </div>
+            <input type="hidden" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /Calendar & Modal -->
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        editable: true,
+        events: [
+          // 여기에 Django 템플릿 변수를 이용하여 데이터를 동적으로 추가
+          {% for c in cal %}
+          {
+          title: '{{ c.title }} {{"("}}{{ c.startdate|date:"d" }}{{"일"}} {{ c.startdate|date:"H:i" }} {{"~"}} {{ c.enddate|date:"d"|add:"-1" }}{{"일"}} {{ c.enddate|date:"H:i" }}{{")"}}',
+          start: '{{ c.startdate|date:"Y-m-d" }}',
+          end: '{{ c.enddate|date:"Y-m-d" }}',
+          color:'{{ c.label }}',
+          borderColor : 'black',
+          textColor: 'black',
+          },
+          {% endfor %}
+        ]
+      });
+      calendar.render();
+    });
+  </script>
+{% endblock %}
