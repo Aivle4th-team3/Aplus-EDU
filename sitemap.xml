@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+    <url>
+      <loc>https://aivle4-team3.github.io/Aplus-EDU//posts/Django_Template/</loc>
+      
+        <lastmod>2024-02-24T00:00:00+09:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>https://aivle4-team3.github.io/Aplus-EDU//posts/모델_상속/</loc>
+      
+        <lastmod>2024-02-22T00:00:00+09:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>https://aivle4-team3.github.io/Aplus-EDU//posts/Migration/</loc>
+      
+        <lastmod>2024-02-21T00:00:00+09:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+    <url>
+      <loc>https://aivle4-team3.github.io/Aplus-EDU//posts/Django_ORM/</loc>
+      
+        <lastmod>2024-02-20T00:00:00+09:00</lastmod>
+      
+
+      
+        <changefreq>weekly</changefreq>
+      
+
+      
+          <priority>0.5</priority>
+      
+
+    </url>
+  
+</urlset>

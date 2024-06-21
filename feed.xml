@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A+EDU Blog</title>
+    <description>Aplus-EDU 개발 과정의 세부 구현에 대한 포스트 정리
+</description>
+    <link>https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/</link>
+    <atom:link href="https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sat, 22 Jun 2024 01:36:55 +0900</pubDate>
+    <lastBuildDate>Sat, 22 Jun 2024 01:36:55 +0900</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>Django Template</title>
+        <description>
+&lt;h2 id=&quot;서버-사이드-렌더링&quot;&gt;서버 사이드 렌더링&lt;/h2&gt;
+
+&lt;p&gt;장고 템플릿은 서버 사이드 렌더링 (Server-Side Rendering, SSR) 방식을 사용한다.&lt;/p&gt;
+
+&lt;p&gt;SSR은 서버에서 HTTP 요청을 받은 후 로직을 처리하여 유동적인 HTML을 생성하고 이를 클라이언트로 전송하는 방식이다.&lt;br /&gt;
+SSR 방식은 페이지가 서버에서 완성되어 전송되므로 검색 엔진 최적화(SEO)에 유리하며, 초기 페이지 로딩 시간을 단축시킬 수 있다.
+장고 템플릿을 사용하면, 서버에서 HTML 컨텐츠를 동적으로 수정하고 클라이언트에게 전송하기 전까지 수정할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;반면, React, Vue, Angular와 같은 클라이언트 사이드 렌더링 (Client-Side Rendering, CSR)은 HTML과 JS 파일을 클라이언트에 전송하고, 클라이언트에서 JavaScript 프레임워크가 실행되어 동적인 작업을 수행한다.&lt;br /&gt;
+이러한 인터렉티브한 CSR 방식은 사용자와의 상호작용을 자연스럽고 반응성을 높인다.&lt;/p&gt;
+
+&lt;p&gt;SSR은 CSR로 발전해오다, 최근에는 Next.js와 같은 SSG(Static Site Generation) 방식이 재조명받고 있다.&lt;/p&gt;
+
+&lt;p&gt;다만, SSR 방식의 장고 템플릿을 진행하고 보니 Github page와 같은 정적 사이트 호스팅에서 프론트엔드 부분을 호스팅하고, 백엔드 서버에서 데이터 페칭을 통해 페이지를 구성하는 전략이 불가능해져버렸다…&lt;/p&gt;
+
+&lt;h2 id=&quot;문법&quot;&gt;문법&lt;/h2&gt;
+
+&lt;p&gt;view에서 render함수를 이용해 정적인 html과 컨텍스트를 보내 템플릿을 구성할 수 있다.&lt;br /&gt;
+컨텍스트 변수들은 장고 템플릿 문법으로 구성된 템플릿 태그에 사용할 수 있다.&lt;br /&gt;
+기본 문법은 {{ 값 }}으로 변수 값을 채울 수 있고, {% for | if | extends | include %} 등의 구문을 통해 로직을 수행할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;-load-static-&quot;&gt;{% load static %}&lt;/h3&gt;
+
+&lt;p&gt;load 태그는 템플릿 최상단에 위치해야 하며 탬플릿 태그나 자원들을 가져오기 사용된다.&lt;br /&gt;
+load static은 django.contrib.staticfiles 앱으로 작동한다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/config/settings.py#L56&quot;&gt;settings.py L56&lt;/a&gt;&lt;br /&gt;
+지정된 STATIC_URL의 경로에 이어 정적 파일들을 url로 생성하게 된다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/config/settings.py#L269&quot;&gt;L269&lt;/a&gt;&lt;br /&gt;
+정적 파일들은 배포 시에는 CDN등을 통해 따로 제공되는 경우가 생기는데 이 때 static 태그를 통해 자동으로 처리하게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;-extends-&quot;&gt;{% extends %}&lt;/h3&gt;
+
+&lt;p&gt;템플릿을 상속하게 만들어 주는 태그를 통해 HTML 파일을 계층화할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;자식 템플릿에서는 extends 태그를 통해 부모 템플릿을 지정하게 되며, &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/templates/home/layout.html#L1&quot;&gt;home/layout.html L1&lt;/a&gt;&lt;br /&gt;
+부모 템플릿에서는 block 태그를 통해 자식 템플릿에서 재정의 할 수 있는 공간을 지정해 둔다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/templates/home/base.py#L55-L57&quot;&gt;base.html L55-57&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 부모 템플릿--&amp;gt;&lt;/span&gt;
+{% block 컨텐츠 %}{% endblock %}
+
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 자식 템플릿 --&amp;gt;&lt;/span&gt;
+{% extends &quot;부모 템플릿.html&quot; %} {% block 컨텐츠 %}컨텐츠{% endblock %}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;이러한 구조로 block간 영역을 재정의 할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;-include-&quot;&gt;{% include %}&lt;/h3&gt;
+
+&lt;p&gt;include 태그는 다른 템플릿을 포함하게 된다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/templates/home/layout.html#L16&quot;&gt;layout.html L16, L23&lt;/a&gt;&lt;br /&gt;
+이 때 호출되는 템플릿은 호출하는 템플릿의 컨텍스트를 받게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;커스텀-태그&quot;&gt;커스텀 태그&lt;/h3&gt;
+
+&lt;p&gt;커스텀 태그는 템플릿 태그 기능의 확장이다.&lt;br /&gt;
+앱 내에서 templatetags 폴더를 만들고 태그를 포함할 모듈 파일을 생성한다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/templatetags/url_utils.py&quot;&gt;templatetags/url_utils.py&lt;/a&gt;&lt;br /&gt;
+django.template.Library의 인스턴스를 가지고 simple_tag 데코레이터로 사용하여 구현한 함수를 태그로 등록한다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/templatetags/url_utils.py#L4-L6&quot;&gt;L4-6&lt;/a&gt;&lt;br /&gt;
+입력값과 현재 템플릿의 컨텍스트를 이용할 수 있어 추가 기능을 사용할 수 있게 된다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/templatetags/url_utils.py#L7&quot;&gt;L7&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;템플릿에서는 load 태그를 통해 태그 모듈을 호출한다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/templates/board/board.html#L3&quot;&gt;board.html L3&lt;/a&gt;&lt;br /&gt;
+사용시에는 모듈 내 구현된 태그명을 이용한다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/templates/board/board.html#L39&quot;&gt;L39&lt;/a&gt;&lt;br /&gt;
+함수 호출 표현식을 사용하여 첫번째 값이 태그이며 다음 값들이 인수가 된다.&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{% current_url &apos;create&apos; %}&lt;/code&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 24 Feb 2024 00:00:00 +0900</pubDate>
+        <link>https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/Django_Template/</link>
+        <guid isPermaLink="true">https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/Django_Template/</guid>
+        
+        
+        <category>Django</category>
+        
+        <category>Template</category>
+        
+      </item>
+    
+      <item>
+        <title>모델 상속</title>
+        <description>&lt;style&gt;  
+.inline-images {
+    display: flex;
+}
+.inline-images img {
+    max-width: 15%;
+    height: auto;
+    flex-grow: 1;
+    box-sizing: border-box;
+}
+&lt;/style&gt;
+
+&lt;p&gt;게시판을 카테고리별로 구분하여 관리를 용이하게 하기 위해 모델 상속을 구현했다.&lt;/p&gt;
+
+&lt;h2 id=&quot;구조&quot;&gt;구조&lt;/h2&gt;
+
+&lt;p&gt;게시판을 카테고리별로 나누어 각각 Community, QnA, Notice로 구분하며, 이들은 통합적으로 관리하는 Forum이 있다.&lt;br /&gt;
+기본 모델인 Post는 author, title, body, tag, created라는 필드를 가지고 있다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/2e01032d30452baca754e70b37b1a0f801595681/board/models.py#L8-L13&quot;&gt;board/models.py L8-13&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;각 카테고리별로 모델을 생성할 때는 Post 모델을 상속받는다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/2e01032d30452baca754e70b37b1a0f801595681/board/models.py#L27-L37&quot;&gt;L27-37&lt;/a&gt;&lt;br /&gt;
+이렇게 생성된 카테고리 모델들은 추가적인 필드 없이 구현되어, 기본적으로 스켈레톤(뼈대) 구현만을 한다.&lt;br /&gt;
+이러한 방식의 상속을 통해, 각 모델은 마커 클래스의 역할을 하게 된다.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;마커 클래스는 추가적인 구현 없이 타입 체크나 분류를 위해 사용되는 클래스이다.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;상속을 통해, 데이터베이스 마이그레이션 시 각 카테고리 모델의 테이블은 기본 Post 테이블을 참조하는 구조로 생성된다.&lt;br /&gt;
+상속받은 모델에서 쿼리를 실행하면, 해당 모델에 맞게 베이스 모델 Post에서 데이터를 가져오되, 현재 모델의 범위로 제한된다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/views.py#L18&quot;&gt;views.py L18&lt;/a&gt;&lt;br /&gt;
+따라서 모든 레코드는 기본 Post 테이블에서 중앙집중적으로 관리되며 상황에 따라 범위를 다르게 하여 데이터 처리를 할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;아래 데이터베이스 테이블이 보인다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;post&quot; src=&quot;https://github.com/Aivle4th-team3/Aplus-EDU--blog/assets/26417221/b4e74e67-1f74-4cfe-a50d-38c12558f556&quot; /&gt;&lt;/p&gt;
+&lt;p class=&quot;inline-images&quot;&gt;
+    &lt;img alt=&quot;notice&quot; src=&quot;https://github.com/Aivle4th-team3/Aplus-EDU--blog/assets/26417221/a130c032-f5fa-4cb7-a18e-90841797a470&quot; /&gt;
+    &lt;img alt=&quot;community&quot; src=&quot;https://github.com/Aivle4th-team3/Aplus-EDU--blog/assets/26417221/362c2c1b-f55d-4bbf-acdc-e935468d13a5&quot; /&gt;
+    &lt;img alt=&quot;qna&quot; src=&quot;https://github.com/Aivle4th-team3/Aplus-EDU--blog/assets/26417221/0ea8491d-36a5-46c5-ab8d-7615fb0203df&quot; /&gt;  
+&lt;/p&gt;
+&lt;p&gt;첫 번째 테이블인 Post 테이블이 중앙집중적 관리를 보여주며, 다음 세 개의 테이블은 기본키+외래키로 참조하고 있다.&lt;br /&gt;
+각 테이블은 독립적이며 합하면 Post 테이블임을 알 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;erd-joined-table-inheritance&quot;&gt;ERD, Joined Table Inheritance&lt;/h2&gt;
+
+&lt;p&gt;아래의 ERD는 Board 앱의 모델 상속 구조를 추상화하여 보여준다.&lt;br /&gt;
+&lt;img src=&quot;https://github.com/Aivle4th-team3/Aplus-EDU--blog/assets/26417221/3c81308f-fc14-4a0e-a0ff-60b54295f48c&quot; alt=&quot;ERD&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;이 구조에서는 관계형 데이터베이스의 상속 관계를 표현하기 위해 Joined Table Inheritance 전략을 적용하였다.&lt;br /&gt;
+이 전략에서 기본 테이블은 슈퍼타입으로, 상속받은 테이블은 서브타입으로 모델링된다.&lt;br /&gt;
+각 서브타입 테이블은 슈퍼타입 테이블의 기본 키를 상속받아 기본 키이자 외래 키로 사용한다. 레코드들이 겹치지 않고 독립적이므로, 각각의 서브타입 테이블은 슈퍼타입 테이블과 1:1 관계를 가진다.&lt;/p&gt;
+
+&lt;h2 id=&quot;구현&quot;&gt;구현&lt;/h2&gt;
+
+&lt;p&gt;urls.py 파일에서는 urlpatterns_of 함수를 사용하여 하위 경로들을 그룹화하고, 각 카테고리별로 다른 뷰를 연결해 주었다.&lt;br /&gt;
+이를 통해 app_name (include의 두 번째 인자)과 namespace를 활용하여 템플릿에서도 네임스페이스를 구분할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;views.py 파일에서는 뷰들을 묶어 클래스화했으며, 각 인스턴스는 내부 변수로 해당 카테고리의 모델을 가지게 된다.&lt;br /&gt;
+뷰 클래스는 구현이 같으며 인스턴스를 통해 구분된다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/views.py#L10-L12&quot;&gt;views.py L10-12&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;View 함수 안에선 request.resolver_match.namespace를 사용하여 정의된 네임스페이스를 알 수 있다.&lt;br /&gt;
+하지만, 구현을 줄이기 위해 각 인스턴스 생성시에 모델 외에도 네임스페이스를 내부 변수로 저장하여 필요할 때 사용하게 되었다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/views.py#L13&quot;&gt;L13&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ModelForm은 instance 인수로 현재 컨텍스트의 모델 인스턴스를 전달받아, 모델 타입에 맞게 모델폼의 타입을 구체화한다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/views.py#L51&quot;&gt;L51&lt;/a&gt;&lt;br /&gt;
+이 접근 방식으로 인해 모델폼에서 별도의 마커 클래스가 필요하지 않는다.&lt;/p&gt;
+
+&lt;p&gt;템플릿에서는 {app_name}:{path_name} 형태로 URL 네임스페이스를 사용할 수 있으며, 하드 코딩을 줄이기 위해 current_url이라는 커스텀 태그를 만들었다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/templatetags/url_utils.py#L6-L10&quot;&gt;templatetags/url_utils.py L6-10&lt;/a&gt;&lt;br /&gt;
+이 태그는 Django 템플릿 라이브러리에 simple_tag 데코레이터를 사용하여 등록되며, HTML 생성 시에 해당 태그가 해석된다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/templates/board/board.html#L39&quot;&gt;../templates/board/board.html L39&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 22 Feb 2024 00:00:00 +0900</pubDate>
+        <link>https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/모델_상속/</link>
+        <guid isPermaLink="true">https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/모델_상속/</guid>
+        
+        
+        <category>Django</category>
+        
+        <category>Model</category>
+        
+      </item>
+    
+      <item>
+        <title>Migration</title>
+        <description>&lt;p&gt;마이그레이션은 데이터베이스 스키마의 변경을 추적하는 형상 관리 시스템이다.
+이것을 통해 장고에서 변화된 모델은 데이터데베이스의 스키마로 이주된다.&lt;br /&gt;
+manage.py를 통해 두 가지 단계를 거치는데 makemigrations와 migrate이다.&lt;br /&gt;
+단어가 헷갈리기 마련인데 동사 명령어임으로 기억하자. makemigrations은 여러 마이그레이션을 수행하기 때문에 복수형이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;makemigrations&quot;&gt;makemigrations&lt;/h2&gt;
+
+&lt;p&gt;이 명령어는 코드 상의 변화를 마이그레이션 파일로 기록하며, 커밋과 유사하게 작동한다.&lt;br /&gt;
+Django 프레임워크는 models.Model을 상속받은 클래스들의 변경 사항을 자동으로 탐지하고 기록한다.&lt;/p&gt;
+
+&lt;p&gt;모델 코드에 변화가 발생하면 makemigrations를 실행하여 데이터베이스에 적용할 마이그레이션 파일을 생성한다.&lt;br /&gt;
+이 파일들은 각 앱의 migrations 폴더에 저장되며, 이전 파일들과 연계하여 변화를 체인처럼 기록한다.&lt;br /&gt;
+현재 파일만으로는 전체 스키마 구조를 완전히 표현할 수 없으며, 파일이 순차적으로 누적되어 스키마를 형성하게 된다. 따라서 중간의 파일이 누락되면 마이그레이션 프로세스가 중단될 수 있다.&lt;/p&gt;
+
+&lt;p&gt;마이그레이션을 롤백하는 과정은 현재 스키마에서 이전 마이그레이션 포인트로 역순으로 적용하는 방식으로 이루어지기 때문에, 마이그레이션 파일을 롤백 전에 삭제해서는 안된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;migrate&quot;&gt;migrate&lt;/h2&gt;
+
+&lt;p&gt;migrate 명령어는 마이그레이션 파일들을 데이터베이스에 적용하는 과정이다.&lt;br /&gt;
+이 과정은 마지막으로 적용된 마이그레이션부터 최신 마이그레이션까지 순차적으로 진행된다.&lt;br /&gt;
+DBMS를 변경할 경우, migrate를 실행하여 모든 마이그레이션을 처음부터 새로 적용하면 같은 스키마가 생성된다.&lt;/p&gt;
+
+&lt;p&gt;이 과정은 데이터베이스의 django_migrations 테이블에도 기록된다.
+이 테이블은 스키마 변화를 추적하고 적용하는 데 사용된다.&lt;br /&gt;
+따라서 로컬 마이그레이션 파일을 직접 수정하면 django_migrations 테이블과의 불일치가 발생하여 의존성 문제를 일으킬 수 있다.&lt;br /&gt;
+반대로, 데이터베이스 테이블을 직접 수정할 경우에도 모델과의 동기화가 해제되어 마이그레이션 과정에서 충돌이 발생할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;데이터가 삽입된 후 참조 무결성 제약이 추가되면, 이로 인해 발생할 수 있는 문제가 상당히 복잡해진다.&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python manage.py migrate myapp zero&lt;/code&gt; 명령을 통해 모든 마이그레이션을 롤백할 수 있지만, 의존성 문제로 인해 이 과정이 자동으로 처리되지 않을 때 오류가 발생할 수 있다.&lt;br /&gt;
+이 경우 데이터베이스를 삭제하는 것까지 고려해야 한다.&lt;br /&gt;
+git파일과 마찬가지라 생각하고 마이그레이션파일의 raw수정은 하지말자…&lt;/p&gt;
+</description>
+        <pubDate>Wed, 21 Feb 2024 00:00:00 +0900</pubDate>
+        <link>https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/Migration/</link>
+        <guid isPermaLink="true">https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/Migration/</guid>
+        
+        
+        <category>Django</category>
+        
+        <category>Model</category>
+        
+      </item>
+    
+      <item>
+        <title>Djnago ORM</title>
+        <description>&lt;h2 id=&quot;orm&quot;&gt;ORM&lt;/h2&gt;
+
+&lt;p&gt;ORM은 Object-Relational Mapping의 약자로, 여기서 Object는 객체지향프로그래밍의 객체이며 Relational은 관계데이터베이스의 관계를 말한다.&lt;br /&gt;
+그러므로 ORM은 객체지향 프로그래밍(OOP)의 객체와 관계 데이터베이스(RDBMS)의 데이터를 연결하는 기술이다.&lt;br /&gt;
+ORM을 사용하여 개발자는 SQL을 명시적으로 작성하지 않고도, 애플리케이션의 프로그래밍 언어를 사용하여 데이터베이스를 관리할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;ORM은 중간 계층으로 작동하여 DBMS의 종속성을 줄여준다.&lt;br /&gt;
+이는 DBMS 제품의 변경이 필요할 때 추가적인 구현 없이도 쉽게 대응할 수 있게 해준다.&lt;br /&gt;
+Django의 ORM 외에도 Flask의 SQLAlchemy, Node.js의 Sequelize 등 다양한 ORM 솔루션이 존재한다.&lt;/p&gt;
+
+&lt;p&gt;그러나 ORM을 사용할 때 모든 DBMS의 고급 기능을 활용할 수 있는 것은 아니다.&lt;br /&gt;
+복잡한 쿼리가 필요한 경우에는 직접 SQL을 작성해야 할 수도 있다.&lt;br /&gt;
+또한, ORM의 추상화 과정에서 비효율적인 쿼리가 생성될 위험이 있으며, 각 ORM의 문법이 다르기 때문에 새로운 ORM을 사용할 때마다 학습이 필요하다.&lt;br /&gt;
+이는 오히려 공통적인 SQL 쿼리문을 배우는 것이 다양한 플랫폼에서 유용할 수 있음을 시사한다.&lt;br /&gt;
+&lt;a href=&quot;https://enterprisecraftsmanship.com/posts/do-you-need-an-orm&quot;&gt;참고&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;django-orm&quot;&gt;Django-ORM&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;https://docs.djangoproject.com/ko/5.0/topics/db/models&quot;&gt;https://docs.djangoproject.com/ko/5.0/topics/db/models&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;django manage.py의 startapp으로 생성된 app 폴더에는 기본 구성으로 models.py가 있다.&lt;br /&gt;
+가능하면 해당 파일로 모델 구현부를 넣는다.&lt;br /&gt;
+models.Model을 상속받아 필드와 관계 속성을 구현할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;1n&quot;&gt;1:N&lt;/h3&gt;
+
+&lt;p&gt;ForeignKey는 외래키 설정으로 1:N 관계를 사용할 때 이용한다 - ForeignKey를 적은 모델이 N이며 참조되는 쪽이 1이다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;참조&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;모델에서 참조하고 있는 모델을 선택하고 싶으면 인스턴스에서 필드 이름을 직접 사용하면 된다.&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;model.[field]&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;역참조&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;반대로 참조되고 있는 모델에서 해당 모델을 참조하는 다른 모델들을 선택할 때는 set manager를 사용할 수 있다.&lt;br /&gt;
+이것은 [테이블명_set]으로 모델에 자동으로 생성되어 있다.&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;model.[테이블명_set].all()&lt;/code&gt;&lt;br /&gt;
+역참조는 현재 객체를 참조하는 여러 모델들을 선택하기 때문에 복수의 객체를 반환한다.&lt;br /&gt;
+또는 참조하는 모델에서 ForeignKey에 related_name 인수를 줘서 [테이블명_set] 대신 접근 속성으로 사용하게 할 수 있다.&lt;/p&gt;
+
+&lt;h3 id=&quot;nm&quot;&gt;N:M&lt;/h3&gt;
+
+&lt;p&gt;ManyToManyField는 다대다 관계를 사용할 때 이용한다.
+어느 한쪽 모델에서 ManyToManyField를 이용하여 다른 모델과 연결하면 장고 ORM은 두 모델 사이의 관계 테이블을 하나 생성하고 양쪽을 외래키로 설정하여 N:1:M 관계를 설정한다.&lt;br /&gt;
+through를 통해 관계 테이블을 직접 구현해 등록할 수도 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Lecture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ManyToManyField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;through&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Enrollment&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;related_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;lectures&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/lecture/models.py#L20&quot;&gt;lecture/models.py L20&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;User와 Lecture의 관계는 다대다 관계이며 Lecture에서 ManyToManyField로 User를 연결해주었다.&lt;br /&gt;
+관계 테이블에 추가 필드를 주기 위해 직접 구현하여 Enrollment 모델을 생성해주었고 through를 통해 연결해주었다.&lt;/p&gt;
+
+&lt;p&gt;Enrollment는 (user, lecture)를 유니크키로써 가지려면 Meta에 unique_together로 설정해줄 수 있다.&lt;br /&gt;
+이제 이 유니크키를 기본키로 설정하면… 좋겠지만 장고 ORM이 복합키를 생성하지 못한다. 그러므로 기본키는 AutoField로 숫자키를 자동 할당하고 유니크키는 테이블 제한 조건으로 설정되게 된다.&lt;/p&gt;
+
+&lt;h3 id=&quot;get_absolute_url&quot;&gt;get_absolute_url&lt;/h3&gt;
+
+&lt;p&gt;get_absolute_url는 해당 모델 인스턴스의 url을 표현해주는 함수이다. &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/models.py#L21-23&quot;&gt;board/models.py L21-23&lt;/a&gt;&lt;br /&gt;
+이 함수의 내부 구현을 채우면 뷰나 템플릿에서 객체를 참조할 때 url을 얻을 수 있다.&lt;br /&gt;
+뷰에서 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;redirect(post)&lt;/code&gt;이나 &lt;a href=&quot;https://github.com/Aivle4th-team3/Aplus-EDU/blob/main/board/views.py#L62&quot;&gt;board/views.py L62&lt;/a&gt;&lt;br /&gt;
+템플릿에서 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;a href=&quot;&quot;/&amp;gt;&lt;/code&gt; 형태로 사용할 수 있다.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Feb 2024 00:00:00 +0900</pubDate>
+        <link>https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/Django_ORM/</link>
+        <guid isPermaLink="true">https://aivle4-team3.github.io/Aplus-EDU//Aplus-EDU/posts/Django_ORM/</guid>
+        
+        
+        <category>Django</category>
+        
+        <category>Model</category>
+        
+      </item>
+    
+  </channel>
+</rss>
